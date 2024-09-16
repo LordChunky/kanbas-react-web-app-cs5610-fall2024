@@ -1,18 +1,19 @@
 import React from 'react';
 import './App.css';
-import Lab from "./Labs";
+import Labs from "./Labs";
+import Kanbas from './Kanbas';
+import { HashRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 
-function App() {
+export default function App() {
   return (
+   <HashRouter>
     <div>
-      <h1>Welcome to Web Dev</h1>
-      {/* This 'Lab' tags is from the Lab.tsx file. 
-      You can break down bigger component of the code and put it into 
-      another .tsx file. From there you can import the new .tsx file
-      into other .tsx file*/}
-      <Lab/>
+     <Routes>
+      <Route path="/" element={<Navigate to="Kanbas"/>}/>
+      <Route path="/Labs/*" element={<Labs />} />
+      <Route path="/Kanbas/*" element={<Kanbas />} />
+     </Routes>
     </div>
-  );
+   </HashRouter>
+ );
 }
-
-export default App;
