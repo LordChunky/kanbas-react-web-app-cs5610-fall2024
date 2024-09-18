@@ -3,6 +3,11 @@ export default function TOC() {
   return (
     <ul>
       <li>
+        <a href="https://github.com/LordChunky/kanbas-react-web-app-cs5610-fall2024" id="wd-github" target="_blank">
+          GitHub
+        </a>
+      </li>
+      <li>
         <Link id="wd-a" to="/Labs">
           Labs
         </Link>
