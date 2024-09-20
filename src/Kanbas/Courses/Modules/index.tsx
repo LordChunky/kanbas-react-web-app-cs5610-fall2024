@@ -5,6 +5,7 @@ export default function Modules() {
         <button>Collapse All</button>
         <button>View Progress</button>
         <select>
+        <option value="PUBLISH">Publish</option>
           <option value="PUBLISH ALL">Publish All</option>
         </select>
         <button>+ Module</button>
