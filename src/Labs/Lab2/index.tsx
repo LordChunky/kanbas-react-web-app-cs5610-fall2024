@@ -1,8 +1,28 @@
+import BackgroundColors from "./BackgroundColors";
+import BootstrapForms from "./BootstrapForms";
+import BootstrapGrids from "./BootstrapGrids";
+import BootstrapLists from "./BootstrapLists";
+import BootstrapNavigation from "./BootstrapNavigation";
+import BootstrapTables from "./BootstrapTables";
+import Borders from "./Borders";
+import Corners from "./Corners";
+import Dimensions from "./Dimensions";
+import Flex from "./Flex";
+import Float from "./Float";
+import ForegroundColors from "./ForegroundColors";
+import GridLayout from "./GridLayout";
 import "./index.css";
+import Margins from "./Margins";
+import Padding from "./Padding";
+import Positions from "./Positions";
+import ReactIconsSampler from "./ReactIcons";
+import ScreenSizeLabel from "./ScreenSizeLabel";
+import Zindex from "./Zindex";
 
 export default function Lab2() {
     return (
-        <div id="wd-lab2">
+        // <div id="wd-lab2">
+        <div className="container">
             <h2>Lab 2 - Cascading Style Sheets</h2>
             <h3>Styling with the STYLE attribute</h3>
             <p>
@@ -12,7 +32,7 @@ export default function Lab2() {
             using the style attribute
             </p>
 
-
+            {/* ID selectors */}
             <div id="wd-css-id-selectors">
                 <h3>ID selectors</h3>
                 <p id="wd-id-selector-1">
@@ -25,27 +45,86 @@ export default function Lab2() {
                 </p>
             </div>
 
-            {/* Foreground Color */}
-            <div id="wd-css-colors">
-                <h2>Colors</h2>
-                <h3 className="wd-fg-color-blue">Foreground color</h3>
-                <p className="wd-fg-color-red">
-                    The text in this paragraph is red but
-                    <span className="wd-fg-color-green">this text is green</span>
-                </p>
+            {/* Content based on the document structure */}
+            <div id="wd-css-document-structure">
+                <div className="wd-selector-1">
+                    <h3>Document structure selectors</h3>
+                    <div className="wd-selector-2">
+                    Selectors can be combined to refer elements in particular
+                    places in the document
+                    <p className="wd-selector-3">
+                        This paragraph's red background is referenced as
+                        <br />
+                        .selector-2 .selector3<br />
+                        meaning the descendant of some ancestor.<br />
+                        <span className="wd-selector-4">
+                        Whereas this span is a direct child of its parent
+                        </span><br />
+                        You can combine these relationships to create specific 
+                        styles depending on the document structure
+                    </p>
+                    </div>
+                </div>
             </div>
+
+
+
+            {/* Foreground Color */}
+            <ForegroundColors />
 
             {/* Background color */}
-            <div id="wd-css-background-colors">
-                <h3 className="wd-bg-color-blue wd-fg-color-white">Background color</h3>
-                <p className="wd-bg-color-red wd-fg-color-black">
-                    This background of this paragraph is red but
-                    <span className="wd-bg-color-green wd-fg-color-white">
-                    the background of this text is green and the foreground white
-                    </span>
-                </p>
-            </div>
+            <BackgroundColors />
 
+            {/* Border styling */}
+            <Borders />
+
+            {/* Paddings */}
+            <Padding />
+
+            {/* Margins */}
+            <Margins />
+
+            {/* Corners */}
+            <Corners />
+
+            {/* Dimensions */}
+            <Dimensions />
+
+            {/* Positions */}
+            <Positions />
+
+            {/* Z-index */}
+            <Zindex />
+
+            {/* Floating images */}
+            <Float />
+
+            {/* Grid Layout */}
+            <GridLayout />
+
+            {/* Flex */}
+            <Flex />
+
+            {/* React Icons */}
+            <ReactIconsSampler />
+
+            {/* Bootstrap grid */}
+            <BootstrapGrids />
+
+            {/* Hiding and showing responsive content */}
+            <ScreenSizeLabel />
+
+            {/* Styling tables */}
+            <BootstrapTables />
+
+            {/* Styling Lists */}
+            <BootstrapLists />
+
+            {/* Basic Form Styling */}
+            <BootstrapForms />
+
+            {/* Navigating with Tabs */}
+            <BootstrapNavigation />
         </div>
     );
 }  
