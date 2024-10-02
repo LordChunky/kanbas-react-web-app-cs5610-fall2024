@@ -1,10 +1,40 @@
+import { FaPlus } from "react-icons/fa6";
+import { HiMagnifyingGlass } from "react-icons/hi2";
+
 export default function Assignments() {
     return (
       <div id="wd-assignments">
-        <input id="wd-search-assignment"
-               placeholder="Search for Assignments" />
-        <button id="wd-add-assignment-group">+ Group</button>
-        <button id="wd-add-assignment">+ Assignment</button>
+        {/* WiP */}
+        <form className="d-inline-flex flex-row position-relative">
+          <button className="btn btn-outline-success border-0 position-absolute start-0" type="submit">
+            <HiMagnifyingGlass className="position-absolutes me-2"/>
+          </button>
+          <input id="wd-search-assignment" type="search" className="form-control" placeholder="     Search..."/>
+        </form>
+        
+        {/* <input id="wd-search-assignment" placeholder="Search..." className="form-control"/> */}
+        
+
+        {/* <div className="inner-addon left-addon">
+          <HiMagnifyingGlass className="position-relative me-2"/> 
+          <input id="wd-search-assignment" placeholder="Search..." className="form-control"/>
+        </div> */}
+      
+
+        
+
+
+
+        <button id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end">
+        <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+        Assignment</button>
+
+        <button id="wd-add-assignment-group" className="btn btn-lg btn-secondary me-1 float-end">
+        <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+        Group</button>
+
+
+
         <h3 id="wd-assignments-title">
           ASSIGNMENTS 40% of Total <button>+</button>
         </h3>

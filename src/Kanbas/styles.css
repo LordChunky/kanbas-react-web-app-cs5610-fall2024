@@ -7,7 +7,7 @@ body * {  font-family: Arial, Helvetica, sans-serif;  }
   }
 }
 
-.list-group.wd > .list-group-item.active {
+.list-group.wd > .list-group-item:focus {
   color: black;
   background-color: white;
   border-left: 3px solid black !important;
@@ -30,4 +30,15 @@ body * {  font-family: Arial, Helvetica, sans-serif;  }
 
 .wd-lesson {
   border-left: 3px solid green !important;
+}
+
+i {
+  font-size: 1rem;
+  color: #333;
+  top: .75rem;
+  left: .75rem
+}
+
+input {
+  padding-left: 2.5rem;
 }
