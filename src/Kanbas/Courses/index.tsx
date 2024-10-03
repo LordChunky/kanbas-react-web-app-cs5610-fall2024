@@ -10,11 +10,37 @@ import PeopleTable from "./People/Table";
 export default function Courses() {
     return (
       <div id="wd-courses">
-        <h2 className="text-danger">
+
+        {/* Breadcrumb */}
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+
+            <li className="breadcrumb-item active">
+              <a href="#/Kanbas/Courses/1234/Home" style={{textDecoration: "none"}}>
+                <h2 className="text-danger">
+                  <FaAlignJustify className="me-4 fs-4 mb-1" />
+                  Course 1234
+                </h2>
+              </a>
+            </li>
+            
+          </ol>
+        </nav>
+
+
+        {/* <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"><a href="#/Kanbas/Courses/1234/Home">Home</a></li>
+            <li className="breadcrumb-item active" aria-current="page">Library</li>
+          </ol>
+        </nav> */}
+
+
+        {/* <h2 className="text-danger">
           <FaAlignJustify className="me-4 fs-4 mb-1" />
           Course 1234
-        </h2> <hr />
-
+        </h2> <hr /> */}
+        <hr />
         <div className="d-flex">
           <div className="d-none d-md-block">
             <CoursesNavigation />
@@ -28,7 +54,7 @@ export default function Courses() {
               <Route path="Assignments" element={<Assignments />} />
               <Route path="Assignments/:aid" element={<AssignmentEditor />} />
               <Route path="People" element={<PeopleTable />} />
-              </Routes>
+            </Routes>
           </div>
         </div>
 

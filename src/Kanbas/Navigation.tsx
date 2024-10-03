@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { PiUserCircleDuotone } from "react-icons/pi";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { IoCalendarOutline } from "react-icons/io5";
 import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
@@ -16,37 +16,37 @@ export default function KanbasNavigation() {
             </a>
 
             <Link to="/Kanbas/Account" id="wd-account-link"
-                className="list-group-item text-center border-0 bg-black text-white">
-                <FaRegCircleUser className="fs-1 text text-white" /><br />
+                className="list-group-item list-kanbas-nav text-center border-0 bg-black text-white">
+                <FaRegCircleUser className="fs-1 text-white" /><br />
                     Account 
             </Link>
 
             <Link to="/Kanbas/Dashboard" id="wd-dashboard-link"
-                className="list-group-item text-center border-0 bg-white text-danger">
+                className="list-group-item list-kanbas-nav text-center border-0 bg-black text-white">
                 <AiOutlineDashboard className="fs-1 text-danger" /><br />
                     Dashboard 
             </Link>
 
             <Link to="/Kanbas/Dashboard" id="wd-course-link"
-                className="list-group-item text-white bg-black text-center border-0">
+                className="list-group-item list-kanbas-nav text-white bg-black text-center border-0">
                 <LiaBookSolid className="fs-1 text-danger" /><br />
                     Courses 
             </Link>
 
             <Link to="/Kanbas/Calendar" id="wd-calendar-link"
-                className="list-group-item text-center border-0 text-white bg-black">
+                className="list-group-item list-kanbas-nav text-center border-0 text-white bg-black">
                 <IoCalendarOutline className="fs-1 text-danger"/><br />
                 Calendar
             </Link>
 
             <Link to="/Kanbas/Inbox" id="wd-inbox-link"
-                className="list-group-item text-center border-0 text-white bg-black">
+                className="list-group-item list-kanbas-nav text-center border-0 text-white bg-black">
                 <FaInbox className="fs-1 text-danger"/><br />
                 Inbox
             </Link>
 
             <Link to="/Labs" id="wd-labs-link"
-                className="list-group-item text-center border-0 text-white bg-black">
+                className="list-group-item list-kanbas-nav text-center border-0 text-white bg-black">
                 <LiaCogSolid className="fs-1 text-danger"/><br />
                 Lab
             </Link>

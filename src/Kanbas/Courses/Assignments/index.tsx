@@ -12,7 +12,6 @@ import { LuNewspaper } from "react-icons/lu";
 export default function Assignments() {
     return (
       <div id="wd-assignments">
-
         <div className="d-flex text-nowrap p-0 mb-5 fs-5">
 
           <div className="me-auto p-2 bd-highlight">
