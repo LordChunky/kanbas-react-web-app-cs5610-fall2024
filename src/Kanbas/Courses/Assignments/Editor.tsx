@@ -1,7 +1,79 @@
 export default function AssignmentEditor() {
     return (
       <div id="wd-assignments-editor">
-        <label htmlFor="wd-name">Assignment Name</label> <br />
+        <form>
+            {/* Assignment Name */}
+            <label htmlFor="wd-name">Assignment Name</label>
+            <div className="input-group mb-3">
+                <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3"/>
+            </div>
+
+            {/* Description area */}
+            <div className="input-group">
+                <textarea className="form-control mb-3" aria-label="With textarea">The assignment is available online Submit a link to the landing page of your Web application running on Netlify. 
+                    The landing page should include the following: Your full name and section Links to each of the lab assignments 
+                    Link to the Kanbas application Links to all relevant source code repositories The Kanbas application should include 
+                    a link to navigate back to the landing page
+                </textarea>
+            </div>
+
+            
+            <div className="float-end">
+                {/* Points */}
+                <div className="input-group mb-3">
+                    <label htmlFor="wd-points">Points</label>
+                    <input id="wd-points" className="form-control" value={100} />
+                </div>
+
+                {/* Assignment Group */}
+                <div className="input-group mb-3">
+                    <label htmlFor="wd-group">Assignment Group</label>
+                    <div className="form-group">
+                        <select className="form-control" id="wd-group">
+                            <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+                        </select>
+                    </div>
+                </div>
+
+                {/* Display Grade as */}
+                <div className="input-group mb-3">
+                    <label htmlFor="wd-display-grade-as">Display Grade as</label>
+                    <div className="form-group">
+                        <select className="form-control" id="wd-display-grade-as">
+                            <option value="PERCENTAGE">Percentage</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>    
+            
+                
+            
+
+
+        </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {/* <label htmlFor="wd-name">Assignment Name</label> <br />
         <input id="wd-name" value="A1 - ENV + HTML" /><br /><br />
         <textarea id="wd-description">
           The assignment is available online Submit a link to the landing page of your Web application running on Netlify. 
@@ -9,7 +81,7 @@ export default function AssignmentEditor() {
           Link to the Kanbas application Links to all relevant source code repositories The Kanbas application should include 
           a link to navigate back to the landing page
         </textarea>
-        <br />
+        <br /> */}
         <table align="center">
             <tr>
                 {/* Points */}

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 export default function CoursesNavigation() {
   return (
-    <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
+    <div id="wd-courses-navigation" className="list-group fs-5 mr-4 rounded-0 d-none d-md-block">
         
         <Link to="/Kanbas/Courses/1234/Home" id="wd-course-home-link"
-        className="list-group-item active border border-0"> 
+        className="list-group-item text-danger border border-0"> 
             Home 
         </Link>
 
