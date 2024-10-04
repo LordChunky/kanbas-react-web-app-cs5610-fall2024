@@ -27,19 +27,6 @@ export default function Courses() {
           </ol>
         </nav>
 
-
-        {/* <nav aria-label="breadcrumb">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item"><a href="#/Kanbas/Courses/1234/Home">Home</a></li>
-            <li className="breadcrumb-item active" aria-current="page">Library</li>
-          </ol>
-        </nav> */}
-
-
-        {/* <h2 className="text-danger">
-          <FaAlignJustify className="me-4 fs-4 mb-1" />
-          Course 1234
-        </h2> <hr /> */}
         <hr />
         <div className="d-flex">
           <div className="d-none d-md-block">
@@ -56,6 +43,7 @@ export default function Courses() {
               <Route path="People" element={<PeopleTable />} />
             </Routes>
           </div>
+
         </div>
 
       </div>
