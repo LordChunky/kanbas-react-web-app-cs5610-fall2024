@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useParams } from "react-router-dom";
+import { Routes, Route, Navigate, useParams, useLocation } from "react-router-dom";
 import CoursesNavigation from "./Navigation";
 import Modules from "./Modules";
 import Home from "./Home";
@@ -11,11 +11,13 @@ import { courses } from "../Database";
 export default function Courses() {
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);
+  const { pathname } = useLocation();
   return (
     <div id="wd-courses">
       <h2 className="text-danger">
         <FaAlignJustify className="me-4 fs-4 mb-1" />
-        {course && course.name}
+        {course && course.name} &gt; {pathname.split("/")[4]} 
+        {/* &gt; {pathname.split("/")[5].replace(/[^a-zA-Z\s]/g, ' ')} */}
       </h2>
       
       <hr />
