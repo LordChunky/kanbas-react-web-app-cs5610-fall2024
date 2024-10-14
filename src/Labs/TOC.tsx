@@ -1,49 +1,51 @@
 // import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 export default function TOC() {
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
   return (
-    <ul className="nav nav-pills">
+    <>
+      <ul className="nav nav-pills">
+        <li className="nav-item">
+          <a href="https://github.com/LordChunky/kanbas-react-web-app-cs5610-fall2024" id="wd-github" className="nav-link" target="_blank">
+            GitHub
+          </a>
+        </li>
 
-      <li className="nav-item">
-        <a href="https://github.com/LordChunky/kanbas-react-web-app-cs5610-fall2024" id="wd-github" className="nav-link" target="_blank">
-          GitHub
-        </a>
-      </li>
+        <li className="nav-item">
+          <a id="wd-a" href="#/Labs" className="nav-link">
+            Labs
+          </a>
+        </li>
 
-      <li className="nav-item">
-        <a id="wd-a" href="#/Labs" className="nav-link">
-          Labs
-        </a>
-      </li>
+        <li className="nav-item">
+          <a id="wd-a1" href="#/Labs/Lab1"
+            className={`nav-link ${pathname.includes("Lab1") ? "active" : ""}`}>
+            Lab 1
+          </a>
+        </li>
 
-      <li className="nav-item">
-        <a id="wd-a1" href="#/Labs/Lab1"
-          className={`nav-link ${pathname.includes("Lab1") ? "active" : ""}`}>
-          Lab 1
-        </a>
-      </li>
+        <li className="nav-item">
+          <a id="wd-a2" href="#/Labs/Lab2"
+            className={`nav-link ${pathname.includes("Lab2") ? "active" : ""}`}>
+            Lab 2
+          </a>
+        </li>
 
-      <li className="nav-item">
-        <a id="wd-a2" href="#/Labs/Lab2"
-          className={`nav-link ${pathname.includes("Lab2") ? "active" : ""}`}>
-          Lab 2
-        </a>
-      </li>
+        <li className="nav-item">
+          <a id="wd-a3" href="#/Labs/Lab3"
+            className={`nav-link ${pathname.includes("Lab3") ? "active" : ""}`}>
+            Lab 3
+          </a>
+        </li>
 
-      <li className="nav-item">
-        <a id="wd-a3" href="#/Labs/Lab3"
-          className={`nav-link ${pathname.includes("Lab3") ? "active" : ""}`}>
-          Lab 3
-        </a>
-      </li>
-
-      <li className="nav-item">
-        <a id="wd-k" href="#/Kanbas/Dashboard" className="nav-link">
-          Kanbas
-        </a>
-      </li>
-      
-    </ul>
+        <li className="nav-item">
+          <a id="wd-k" href="#/Kanbas/Dashboard" className="nav-link">
+            Kanbas
+          </a>
+        </li>
+        
+      </ul>
+    </>
   );
 }
