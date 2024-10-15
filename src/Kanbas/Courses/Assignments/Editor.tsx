@@ -79,6 +79,7 @@ export default function AssignmentEditor() {
                                     </div>
                                 </div>
 
+                                {/* div with className with d-inline */}
                                 {/* Submission type */}
                                 <div className="form-group row">
                                     <div className="input-group mb-3">
@@ -132,11 +133,12 @@ export default function AssignmentEditor() {
                                 <div className="form-group row">
                                     <div className="input-group mb-3">
                                         <label htmlFor="wd-assign-to" className="text-end col-sm-3 col-form-label me-3">Assign</label>
-                                        <div id="wd-assign-to-box" className="d-line-flex flex-fill border border-gray border-1 rounded">
+                                        
+                                        <div id="wd-assign-to-box" className="d-line flex-fill border border-gray border-1 rounded">
                                         
                                             {/* Assign to */}
                                             <label htmlFor="wd-assign-to" className="ms-3 me-3 mb-2"><b>Assign to</b></label>
-                                            <div id="wd-assign-to" className="d-line border border-gray border-1 rounded ms-3 me-3 mb-2 pt-1 pb-1 ps-1 pe-1">
+                                            <div id="wd-assign-to" className="border border-gray border-1 rounded ms-3 me-3 mb-2 pt-1 pb-1 ps-1 pe-1">
                                                 <div id="option-box" className="border-0 rounded bg-secondary">
                                                     Everyone <p className="d-inline ms-3">X</p>
                                                 </div>
@@ -149,17 +151,20 @@ export default function AssignmentEditor() {
 
                                             {/* Available from and Until*/}
                                             <div className="d-flex">
-                                                <div className="d-inline p-1 ms-3 me-3 mb-2 w-50">
+                                                <div className="p-1 ms-3 me-3 mb-2 w-50">
                                                     <label htmlFor="wd-available-from"><b>Available from</b></label>
                                                     <input type="datetime-local" id="wd-available-from" className="form-control" value={`${assignment.not_available_until_date_val}`}/>
                                                 </div>
 
-                                                <div className="d-inline p-1 me-3 w-50">
+                                                <div className="p-1 me-3 w-50">
                                                     <label htmlFor="wd-available-until"><b>Until</b></label>
                                                     <input type="datetime-local" id="wd-available-until" className="form-control" value=""/>
                                                 </div>
                                             </div>
+
                                         </div>
+
+
                                     </div>
                                 </div>
 
