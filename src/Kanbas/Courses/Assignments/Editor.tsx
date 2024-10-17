@@ -5,8 +5,7 @@ import * as db from "../../Database";
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
     const assignments = db.assignments;
-    const modules = db.modules;
-    const { pathname } = useLocation();
+    const course = db.courses.find((course) => course._id === cid);
     return (
         <div>
             {assignments
@@ -171,13 +170,12 @@ export default function AssignmentEditor() {
                                 <hr />
 
                                 <div className="mb-3">
-                                    <button id="wd-assignment-editor-save" className="btn btn-lg btn-danger me-1 float-end">
+                                    <Link  id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
                                         Save
-                                    </button>
-
-                                    <button id="wd-assignment-editor-cancel" className="btn btn-lg btn-secondary me-1 float-end">
+                                    </Link>
+                                    <Link  id="wd-assignment-editor-cancel" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-secondary me-1 float-end">
                                         Cancel
-                                    </button>
+                                    </Link>
                                 </div>
                                 
                             </div> 

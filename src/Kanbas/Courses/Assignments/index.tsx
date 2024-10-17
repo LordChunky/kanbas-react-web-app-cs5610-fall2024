@@ -23,16 +23,18 @@ export default function Assignments() {
         </div>
 
         <div>
+          <button id="wd-add-assignment-group" className="btn btn-lg btn-secondary me-1 float-end">
+          <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+          Group</button>
+        </div>
+        
+        <div>
           <button id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end">
           <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
           Assignment</button>
         </div>
 
-        <div>
-          <button id="wd-add-assignment-group" className="btn btn-lg btn-secondary me-1 float-end">
-          <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-          Group</button>
-        </div>
+        
         
       </div>
 
