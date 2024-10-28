@@ -4,23 +4,64 @@ import KanbasNavigation from "./Navigation";
 import Account from "./Account";
 import Dashboard from "./Dashboard/Dashboard";
 import Courses from "./Courses";
+import * as db from "./Database";
+import { useState } from "react";
+import store from "./store"; // import the redux store
+import { Provider } from "react-redux"; // import the redux store Provider
 
 export default function Kanbas() {
-    return (
+  // State variables
+  const [courses, setCourses] = useState<any[]>(db.courses);
+  const [course, setCourse] = useState<any>({
+    _id: "1234", name: "New Course", number: "New Number",
+    startDate: "2023-09-10", endDate: "2023-12-15", 
+    image: "/images/pain.jpeg", description: "New Description",
+  });
+
+  // Functions
+  const addNewCourse = () => {
+    setCourses([...courses, { ...course, _id: new Date().getTime().toString() }]);
+  };
+  const deleteCourse = (courseId: any) => {
+    setCourses(courses.filter((course) => course._id !== courseId));
+  };
+  const updateCourse = () => {
+    setCourses(
+      courses.map((c) => {
+        if (c._id === course._id) {
+          return course;
+        } else {
+          return c;
+        }
+      })
+    );
+  };
+
+  return (
+    // wrap your application with the Provider so all child elements can read and write to the store
+    <Provider store={store}>
       <div id="wd-kanbas">
         <KanbasNavigation />
         <div className="wd-main-content-offset p-3">
             <Routes>
               <Route path="/" element={<Navigate to="/Kanbas/Account" />} />
               <Route path="/Account/*" element={<Account />} />
-              <Route path="/Dashboard" element={<Dashboard />} />
-              <Route path="/Courses/:cid/*" element={<Courses />} />
+              <Route path="/Dashboard" element={
+                <Dashboard
+                  courses={courses}
+                  course={course}
+                  setCourse={setCourse}
+                  addNewCourse={addNewCourse}
+                  deleteCourse={deleteCourse}
+                  updateCourse={updateCourse}/>
+              } />
+              <Route path="/Courses/:cid/*" element={<Courses courses={courses} />} />
               <Route path="/Calendar" element={<h1>Calendar</h1>} />
               <Route path="/Inbox" element={<h1>Inbox</h1>} />
             </Routes>
         </div>
-
       </div>
+    </Provider>
   );
 }
   

@@ -6,10 +6,11 @@ import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import { FaAlignJustify } from "react-icons/fa6";
 import PeopleTable from "./People/Table";
-import { courses } from "../Database";
 
-export default function Courses() {
+// "{ courses }: { courses: any[]; }" will load courses from Kanbas instead of database
+export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
+  // find the course by its ID
   const course = courses.find((course) => course._id === cid);
   const { pathname } = useLocation();
   return (
