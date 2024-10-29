@@ -11,7 +11,7 @@ import PeopleTable from "./People/Table";
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   // find the course by its ID
-  const course = courses.find((course) => course._id === cid);
+  const course = courses.find((course: any) => course._id === cid);
   const { pathname } = useLocation();
   return (
     <div id="wd-courses">
