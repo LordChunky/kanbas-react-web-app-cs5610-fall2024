@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 export default function AccountNavigation() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
-  // Might have something to do with modules editor logic?
   return (
     <div>
       { links.length == 2 && (
