@@ -20,16 +20,33 @@ import AssignmentCheckingButtons from "./AssignmentCheckingButtons";
 // import AssignmentEditor from "./Editor";
 
 export default function Assignments() {
-  const { cid } = useParams();
-  const assignments = db.assignments;
+  const { cid, aid } = useParams();
+  const { assignments } = useSelector((state: any) => state.assignmentReducer);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-  const handleAddAssignment = () => {
+  // This will create an assignment with an ID, store it in the reducer using the function "addAssignment" so 
+  // the website can dynamically rendered the page
+  const handleAddingNewAssignment = () => {
+    dispatch(addAssignment(assignment_template));
     navigate(`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`);
   }
+
+  const assignment_template = {
+    _id: aid, 
+    title: "New Assignment", 
+    description : "New Description",
+    course: cid,
+    not_available_until_day: "May 13", 
+    not_available_until_date_val: "2024-05-13T00:00",
+    not_available_until_time: "12:00am",
+    due_day: "May 20",
+    due_date_val: "2024-05-20T23:59",
+    due_time: "11:59pm",  
+    points: 100
+  };
 
   return (
     <div id="wd-assignments">
@@ -54,27 +71,12 @@ export default function Assignments() {
           
           <div>
 
-            <button onClick={handleAddAssignment} className="btn btn-lg btn-danger me-1 float-end">
+            {/* when click on it, call dispatch(addAssignment) to store assignment id into the reducer  */}
+            <button onClick={handleAddingNewAssignment} className="btn btn-lg btn-danger me-1 float-end">
               <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
               Assignment
             </button>
             
-            {/* <div className="flex-fill">
-              <Routes>
-                <Route path="Assignments/:aid" element={<AssignmentEditor 
-                  addModule={() => {
-                    dispatch(addModule({  
-                      // name: moduleName, 
-                      course: cid }));
-                    // setModuleName("");
-                  }} />
-                } />
-              </Routes>
-            </div> */}
-
-            {/* <Link id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end">
-            <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-            Assignment</Link> */}
           </div>
         </div>
       )}
