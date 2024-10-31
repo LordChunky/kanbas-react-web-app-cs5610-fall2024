@@ -9,7 +9,7 @@ export default function ModuleControls(
   { moduleName, setModuleName, addModule }:
   { moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }) {
   
-    const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   return (
     <div id="wd-modules-controls" className="text-nowrap">
       { currentUser.role != "FACULTY" && (

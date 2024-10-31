@@ -1,37 +1,73 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 import * as db from "../../Database";
-import { addAssignment } from "./reducer";
+import { addAssignment, updateAssignment } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
 
 
-export default function AssignmentEditor(
-    { addModule }:
-    { addModule: () => void; }
-) {
+export default function AssignmentEditor() {
     const { cid, aid } = useParams();
-    const assignments = db.assignments;
+    const { assignments } = useSelector((state: any) => state.assignmentReducer);
     const course = db.courses.find((course) => course._id === cid);
-    const { assignment_list } = useSelector((state: any) => state.modulesReducer);
     const dispatch = useDispatch();
+
+
+    const assignment_template = assignments.find((a:any) => a._id === aid) || {
+        _id: aid, 
+        title: "New Assignment", 
+        description : "New Description",
+        course: cid,
+        not_available_until_day: "May 13", 
+        not_available_until_date_val: "2024-05-13T00:00",
+        not_available_until_time: "12:00am",
+        due_day: "May 20",
+        due_date_val: "2024-05-20T23:59",
+        due_time: "11:59pm",  
+        points: 100
+    };
+
+    const [editedAssignment, setEditedAssignment] = useState(assignment_template);
+
+
     return (
         <div>
+            {/* if aid = new Date().getTime().toString() */}
             {assignments
                 // assignment.course === cid: Filter the course by course id (cid comes from Kanbas/index.tsx)
                 // assignment._id === aid: Filter the assignemnt by assignment id (aid comes from Kanbas/Courses/index.tsx)
                 .filter((assignment: any) => assignment.course === cid && assignment._id === aid)
-                .map((assignment) => (
+                .map((assignment: any) => (
                     <div id="wd-assignments-editor">
                         
+                        {/* {!assignment.editing && ()} */}
+                        {/* { assignment.editing && ()} */}
+
+
+
                         {/*Assignment Name */}
                         <label htmlFor="wd-name">Assignment Name</label>
                         <div className="input-group mb-3">
-                            <input id="wd-name" type="text" value={`${assignment.title}`} className="form-control" />
+                            <input 
+                                id="wd-name" 
+                                type="text" 
+                                value={editedAssignment.title} 
+                                onChange={(e) => setEditedAssignment({
+                                    ...editedAssignment, title: e.target.value,
+                                })}
+                                className="form-control" />
                         </div>
 
 
                         {/* Description area */}
                         <div className="input-group mb-3">
-                            <input id="wd-name" type="text" placeholder="New Assignment Description" className="form-control" />
+                            <input 
+                                id="wd-description" 
+                                type="text" 
+                                value={editedAssignment.description} 
+                                onChange={(e) => setEditedAssignment({
+                                    ...editedAssignment, description: e.target.value,
+                                })}
+                                className="form-control" />
                         </div>
 
                         {/* Form group for the rest */}
@@ -39,10 +75,14 @@ export default function AssignmentEditor(
                             <div className="mt-3 float-end w-100">
                                 
                                 {/* Points */}
+                                {/* { assignment.editing &&(...)} */}
                                 <div className="form-group row">
                                     <div className="input-group mb-3">
                                         <label htmlFor="wd-points" className="text-end col-sm-3 col-form-label me-3">Points</label>
-                                        <input id="wd-points" className="form-control" value={`${assignment.points}`} />
+                                        <input 
+                                            id="wd-points" 
+                                            className="form-control" 
+                                            value={`${assignment.points}`} />
                                     </div>
                                 </div>
 
@@ -138,18 +178,30 @@ export default function AssignmentEditor(
 
                                             {/* Due */}
                                             <label htmlFor="wd-due-date" className="ms-3 me-3 mb-2"><b>Due</b></label>
-                                            <input type="datetime-local" id="wd-due-date" className="form-control" value={`${assignment.due_date_val}`}/>
+                                            <input 
+                                                type="datetime-local" 
+                                                id="wd-due-date" 
+                                                className="form-control" 
+                                                value={`${assignment.due_date_val}`}/>
 
                                             {/* Available from and Until*/}
                                             <div className="d-flex">
                                                 <div className="p-1 ms-3 me-3 mb-2 w-50">
                                                     <label htmlFor="wd-available-from"><b>Available from</b></label>
-                                                    <input type="datetime-local" id="wd-available-from" className="form-control" value={`${assignment.not_available_until_date_val}`}/>
+                                                    <input 
+                                                        type="datetime-local" 
+                                                        id="wd-available-from" 
+                                                        className="form-control" 
+                                                        value={`${assignment.not_available_until_date_val}`}/>
                                                 </div>
 
                                                 <div className="p-1 me-3 w-50">
                                                     <label htmlFor="wd-available-until"><b>Until</b></label>
-                                                    <input type="datetime-local" id="wd-available-until" className="form-control" value=""/>
+                                                    <input 
+                                                        type="datetime-local" 
+                                                        id="wd-available-until" 
+                                                        className="form-control" 
+                                                        value=""/>
                                                 </div>
                                             </div>
 
@@ -170,13 +222,26 @@ export default function AssignmentEditor(
                                         - When you click on assignment that's already exist in the DB, tha aid will show up */}
 
                                     {/* This will show up when user click on the "+assignment" button the "Assignments" screen */}
-                                    { aid === "" && (
+                                    {!assignment.editing && (
                                         <Link onClick={addAssignment} id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
                                             Save
                                         </Link>
                                     )}
                                     
+                                    {/* { aid === "" && (
+                                        <Link onClick={addAssignment} id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
+                                            Save
+                                        </Link>
+                                    )} */}
+                                    
                                     {/* This will show up when user click on the assignment title that is already existed in the "Assignments" screen */}
+                                    { assignment.editing && (
+                                        <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end"
+                                            // Update everything that the user changed
+                                            onChange={() => updateAssignment({...assignment_template})}>
+                                                Save
+                                        </Link>
+                                    )}
                                     {/* { aid !== "" && (
                                         <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end"
                                             onChange={(e) => setModuleName(e.target.value)}>

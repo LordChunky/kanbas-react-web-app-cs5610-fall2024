@@ -6,7 +6,8 @@ import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import { FaAlignJustify } from "react-icons/fa6";
 import PeopleTable from "./People/Table";
-import { addModule } from "./Modules/reducer";
+import { addAssignment } from "./Assignments/reducer";
+import { useDispatch } from "react-redux";
 
 // "{ courses }: { courses: any[]; }" will load courses from Kanbas instead of database
 export default function Courses({ courses }: { courses: any[]; }) {
@@ -14,11 +15,7 @@ export default function Courses({ courses }: { courses: any[]; }) {
   // find the course by its ID
   const course = courses.find((course: any) => course._id === cid);
   const { pathname } = useLocation();
-
-
-  function dispatch(arg0: { payload: any; type: "modules/addModule"; }) {
-    throw new Error("Function not implemented.");
-  }
+  const dispatch = useDispatch();
 
   return (
     <div id="wd-courses">
@@ -40,13 +37,7 @@ export default function Courses({ courses }: { courses: any[]; }) {
             <Route path="Modules" element={<Modules />} />
             <Route path="Assignments" element={<Assignments />} />
             {/* <Route path="Assignments/:aid" element={<AssignmentEditor />} /> */}
-            <Route path="Assignments/:aid" element={<AssignmentEditor 
-              addModule={() => {
-                dispatch(addModule({ 
-                  // name: moduleName, 
-                  course: cid }));
-                // setModuleName("");
-              }} />} 
+            <Route path="Assignments/:aid" element={<AssignmentEditor />} 
               />
             <Route path="People" element={<PeopleTable />} />
           </Routes>

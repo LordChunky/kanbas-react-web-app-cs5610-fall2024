@@ -13,13 +13,14 @@ const assignmentsSlice = createSlice({
         const newAssignment: any = { // update modules in state adding new module
             _id: new Date().getTime().toString(), // at beginning of array. Override _id with timestamp
             title: assignment.title, 
-            course: assignment.title, 
-            not_available_until_day: assignment.title, 
-            not_available_until_date_val: assignment.title,
-            not_available_until_time: assignment.title,
-            due_day: assignment.title,
-            due_date_val: assignment.title,
-            due_time: assignment.title, 
+            description: assignment.description,
+            course: assignment.course, 
+            not_available_until_day: assignment.not_available_until_day, 
+            not_available_until_date_val: assignment.not_available_until_date_val,
+            not_available_until_time: assignment.not_available_until_time,
+            due_day: assignment.due_day,
+            due_date_val: assignment.due_date_val,
+            due_time: assignment.due_time, 
             points: assignment.points
         };
         state.assignments = [...state.assignments, newAssignment] as any;
@@ -48,7 +49,7 @@ const assignmentsSlice = createSlice({
     },
 });
 // export all reducer functions
-export const { addAssignment, deleteAssignment, updateAssignment } = assignmentsSlice.actions;
+export const { addAssignment, deleteAssignment, updateAssignment, editAssignment } = assignmentsSlice.actions;
 // export reducer
 export default assignmentsSlice.reducer;
 

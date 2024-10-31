@@ -1,5 +1,4 @@
 import { FaPlus } from "react-icons/fa6";
-import { HiMagnifyingGlass } from "react-icons/hi2";
 
 // import ModulesControls from "../Modules/ModuleControls";
 // import ModuleControlButtons from "../Modules/ModuleControlButtons";
@@ -12,17 +11,24 @@ import { Link, Routes, Route, Navigate, useParams, useLocation } from "react-rou
 import * as db from "../../Database";
 // import AssignmentEditor from ".Courses/Assignments/Editor";
 
-import { useSelector } from "react-redux";
-import AssignmentEditor from "./Editor";
-import { addModule } from "../Modules/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addAssignment, deleteAssignment, updateAssignment, editAssignment }
+  from "./reducer";
+import AssignmentRemover from "./AssignmentRemover";
+import AssignmentCheckingButtons from "./AssignmentCheckingButtons";
+// import AssignmentEditor from "./Editor";
 
 export default function Assignments() {
   const { cid } = useParams();
   const assignments = db.assignments;
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  function dispatch(arg0: any) {
-    throw new Error("Function not implemented.");
+
+  const handleAddAssignment = () => {
+    navigate(`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`);
   }
 
   return (
@@ -48,24 +54,23 @@ export default function Assignments() {
           
           <div>
 
-            <Link key={`/Kanbas/Courses/${cid}/Assignments/AssignmentEditor`} to={`/Kanbas/Courses/${cid}/Assignments/AssignmentEditor`} className={`btn btn-lg btn-danger me-1 float-end
-              ${pathname.includes("AssignmentEditor")}`}>
+            <button onClick={handleAddAssignment} className="btn btn-lg btn-danger me-1 float-end">
               <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
               Assignment
-            </Link>
+            </button>
             
-            <div className="flex-fill">
+            {/* <div className="flex-fill">
               <Routes>
-                <Route path="Assignments/AssignmentEditor" element={<AssignmentEditor 
+                <Route path="Assignments/:aid" element={<AssignmentEditor 
                   addModule={() => {
-                    dispatch(addModule({ 
+                    dispatch(addModule({  
                       // name: moduleName, 
                       course: cid }));
                     // setModuleName("");
                   }} />
                 } />
               </Routes>
-            </div>
+            </div> */}
 
             {/* <Link id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end">
             <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
@@ -109,8 +114,11 @@ export default function Assignments() {
                       values to blank / default and add it on save click */}
                       {/* Take a look at this maybe since it's the link to an assignment */}
                       {/* perhaps useParams might be useful  */}
-                      <Link to={`${assignment._id}`} 
-                      className="wd-assignment-link link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">
+                      <Link 
+                        // Make assignment.edit == true?
+                        onClick={() => dispatch(editAssignment(assignment._id))}
+                        to={`${assignment._id}`} 
+                        className="wd-assignment-link link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">
                         <b>{assignment.title}</b>
                       </Link> <br/>
                       <p className="text-danger d-inline">Multiple Modules </p>| <b>Not available until</b> {`${assignment.not_available_until_day}`} at {`${assignment.not_available_until_time}`} | <br></br>
@@ -122,7 +130,11 @@ export default function Assignments() {
 
                     { currentUser.role == "FACULTY" && (
                       <div className="float-start d-flex align-items-center">
-                        <LessonControlButtons />
+                        <AssignmentCheckingButtons 
+                          assignmentId={assignment._id}
+                          deleteAssignment={(assignmentId) => {
+                            dispatch(deleteAssignment(assignmentId));
+                          }}/>
                       </div>
                     )}
                     
@@ -130,10 +142,8 @@ export default function Assignments() {
                 </div>
 
 
-
               </li>
-  
-              
+            
       
           ))}
         </ul>
