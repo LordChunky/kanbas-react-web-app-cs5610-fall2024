@@ -13,6 +13,8 @@ export default function Courses({ courses }: { courses: any[]; }) {
   // find the course by its ID
   const course = courses.find((course: any) => course._id === cid);
   const { pathname } = useLocation();
+
+
   return (
     <div id="wd-courses">
       <h2 className="text-danger">

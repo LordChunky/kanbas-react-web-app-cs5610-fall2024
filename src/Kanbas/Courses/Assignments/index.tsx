@@ -76,7 +76,11 @@ export default function Assignments() {
 
                     <div className="flex-fill">
                         
-
+                      {/* For edit / add I use the editor for both. And essentially if I find an assignment with the 
+                      id in the edit link, I edit as normal and update it on save click. If I don't, I set the form 
+                      values to blank / default and add it on save click */}
+                      {/* Take a look at this maybe since it's the link to an assignment */}
+                      {/* perhaps useParams might be useful  */}
                       <Link to={`${assignment._id}`} 
                       className="wd-assignment-link link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">
                         <b>{assignment.title}</b>

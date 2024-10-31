@@ -1,11 +1,15 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 import * as db from "../../Database";
+import { addAssignment } from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
 
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
     const assignments = db.assignments;
     const course = db.courses.find((course) => course._id === cid);
+    const { assignment_list } = useSelector((state: any) => state.modulesReducer);
+    const dispatch = useDispatch();
     return (
         <div>
             {assignments
@@ -23,23 +27,8 @@ export default function AssignmentEditor() {
 
 
                         {/* Description area */}
-                        <div id="wd-description" className="d-line-flex border border-gray border-1 rounded ps-2 pe-2 pt-4 pb-1">
-                            The assignment is <p className="text-danger d-inline"> available online </p>
-                                
-                            <p className="pt-3">
-                                Submit a link to the landing page of your Web application running on Netlify.
-                            </p> 
-                            
-                            
-                            The landing page should include the following:
-                            <ul className="pt-3">
-                                <li>Your full name and section </li>
-                                <li>Links to each of the lab assignments </li>
-                                <li>Link to the Kanbas application </li>
-                                <li>Links to all relevant source code repositories </li>
-                            </ul>
-                            
-                            The Kanbas application should include a link to navigate back to the landing page
+                        <div className="input-group mb-3">
+                            <input id="wd-name" type="text" placeholder="New Assignment Description" className="form-control" />
                         </div>
 
                         {/* Form group for the rest */}
@@ -170,7 +159,9 @@ export default function AssignmentEditor() {
                                 <hr />
 
                                 <div className="mb-3">
-                                    <Link  id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
+                                    {/* Maybe it's similar design to the module editor? */}
+                                    {/* onClick={() => dispatch(addAssignment)} */}
+                                    <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
                                         Save
                                     </Link>
                                     <Link  id="wd-assignment-editor-cancel" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-secondary me-1 float-end">
