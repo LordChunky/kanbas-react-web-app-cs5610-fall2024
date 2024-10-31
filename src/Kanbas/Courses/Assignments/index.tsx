@@ -8,15 +8,23 @@ import LessonControlButtons from "../Modules/LessonControlButtons";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { LuNewspaper } from "react-icons/lu";
 
-import { Link, useParams } from "react-router-dom";
+import { Link, Routes, Route, Navigate, useParams, useLocation } from "react-router-dom";
 import * as db from "../../Database";
+// import AssignmentEditor from ".Courses/Assignments/Editor";
 
 import { useSelector } from "react-redux";
+import AssignmentEditor from "./Editor";
+import { addModule } from "../Modules/reducer";
 
 export default function Assignments() {
   const { cid } = useParams();
   const assignments = db.assignments;
+  const { pathname } = useLocation();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+  function dispatch(arg0: any) {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div id="wd-assignments">
       { currentUser.role != "FACULTY" && (
@@ -39,9 +47,29 @@ export default function Assignments() {
           </div>
           
           <div>
-            <button id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end">
+
+            <Link key={`/Kanbas/Courses/${cid}/Assignments/AssignmentEditor`} to={`/Kanbas/Courses/${cid}/Assignments/AssignmentEditor`} className={`btn btn-lg btn-danger me-1 float-end
+              ${pathname.includes("AssignmentEditor")}`}>
+              <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+              Assignment
+            </Link>
+            
+            <div className="flex-fill">
+              <Routes>
+                <Route path="Assignments/AssignmentEditor" element={<AssignmentEditor 
+                  addModule={() => {
+                    dispatch(addModule({ 
+                      // name: moduleName, 
+                      course: cid }));
+                    // setModuleName("");
+                  }} />
+                } />
+              </Routes>
+            </div>
+
+            {/* <Link id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end">
             <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-            Assignment</button>
+            Assignment</Link> */}
           </div>
         </div>
       )}

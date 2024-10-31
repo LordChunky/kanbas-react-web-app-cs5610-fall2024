@@ -4,7 +4,10 @@ import { addAssignment } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 
 
-export default function AssignmentEditor() {
+export default function AssignmentEditor(
+    { addModule }:
+    { addModule: () => void; }
+) {
     const { cid, aid } = useParams();
     const assignments = db.assignments;
     const course = db.courses.find((course) => course._id === cid);
@@ -161,9 +164,28 @@ export default function AssignmentEditor() {
                                 <div className="mb-3">
                                     {/* Maybe it's similar design to the module editor? */}
                                     {/* onClick={() => dispatch(addAssignment)} */}
-                                    <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
-                                        Save
-                                    </Link>
+
+                                    {/* Idea: 
+                                        - when you click on +Assignment button to create an assignment the aid will not exist
+                                        - When you click on assignment that's already exist in the DB, tha aid will show up */}
+
+                                    {/* This will show up when user click on the "+assignment" button the "Assignments" screen */}
+                                    { aid === "" && (
+                                        <Link onClick={addAssignment} id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
+                                            Save
+                                        </Link>
+                                    )}
+                                    
+                                    {/* This will show up when user click on the assignment title that is already existed in the "Assignments" screen */}
+                                    {/* { aid !== "" && (
+                                        <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end"
+                                            onChange={(e) => setModuleName(e.target.value)}>
+                                                Save
+                                        </Link>
+                                    )} */}
+                                    
+
+
                                     <Link  id="wd-assignment-editor-cancel" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-secondary me-1 float-end">
                                         Cancel
                                     </Link>
