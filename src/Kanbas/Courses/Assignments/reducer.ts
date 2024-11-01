@@ -37,7 +37,7 @@ const assignmentsSlice = createSlice({
         // Also update the points, Due date, available from and until, ...
         updateAssignment: (state, { payload: assignment }) => {
         state.assignments = state.assignments.map((a: any) =>
-            a._id === assignment._id ? module : a
+            a._id === assignment._id ? assignment : a
         ) as any;
         },
         // select the assignment to edit (select the right module using the assignmentId)

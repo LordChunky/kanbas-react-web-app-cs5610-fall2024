@@ -8,12 +8,36 @@ import { useState } from "react";
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
     const { assignments } = useSelector((state: any) => state.assignmentReducer);
-    const course = db.courses.find((course) => course._id === cid);
+    const { pathname } = useLocation();
+    const courses = db.courses.find((course) => course._id === cid);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    // const location = useLocation();
 
 
-    const assignment_template = assignments.find((a:any) => a._id === aid) || {
+    // const EditAssignmentPage = () => {
+    //     const [assignment, setAssignment] = useState(location.state?.assignment || {});
+    //     const handleSaveAssignment = () => {
+    //         dispatch(addAssignment(assignment));
+    //     };
+    // }
+
+    // const assignment_template = assignments.find((a:any) => a._id === aid) || {
+        // _id: aid, 
+        // title: "New Assignment", 
+        // description : "New Description",
+        // course: cid,
+        // not_available_until_day: "May 13", 
+        // not_available_until_date_val: "2024-05-13T00:00",
+        // not_available_until_time: "12:00am",
+        // due_day: "May 20",
+        // due_date_val: "2024-05-20T23:59",
+        // due_time: "11:59pm",  
+        // points: 100
+    // };
+
+    // default template of the assignment
+    let assignment = {
         _id: aid, 
         title: "New Assignment", 
         description : "New Description",
@@ -24,14 +48,29 @@ export default function AssignmentEditor() {
         due_day: "May 20",
         due_date_val: "2024-05-20T23:59",
         due_time: "11:59pm",  
-        points: 100
-    };
-
-    const [editedAssignment, setEditedAssignment] = useState(assignment_template);
-    const handleAddingAssignment = () => {
-        dispatch(addAssignment(assignment_template));
-        navigate(`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`);
+        points: "100"
     }
+    
+    // Which ever you select will be the "template"
+    const pickAssignment = assignments.filter((assignment:any)=>(assignment._id === aid))[0];
+    if(pickAssignment) {
+        assignment = pickAssignment
+    }
+
+    // All of these variable are State variable, which is essentially a record of object that got saved and might be able to use it later
+    const [title, setTitle] = useState(assignment.title);
+    const [description, setDescription] = useState(assignment.description);
+    const [availableDay, setAvailableDay] = useState(assignment.not_available_until_date_val);
+    const [availableTime, setAvailableTime] = useState(assignment.not_available_until_time);
+    const [dueDay, setDueDay] = useState(assignment.due_date_val);
+    const [dueTime, setDueTime] = useState(assignment.due_time);
+    const [points, setPoints] = useState(assignment.points);
+    
+    // const [editedAssignment, setEditedAssignment] = useState(assignment);
+    // const handleAddingAssignment = () => {
+    //     dispatch(addAssignment(assignment_template));
+    //     navigate(`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`);
+    // }
 
     // const handleEditingAssignment = () => {
     //     dispatch(addAssignment(assignment_template));
@@ -51,18 +90,14 @@ export default function AssignmentEditor() {
                         {/* {!assignment.editing && ()} */}
                         {/* { assignment.editing && ()} */}
 
-
-
                         {/*Assignment Name */}
                         <label htmlFor="wd-name">Assignment Name</label>
                         <div className="input-group mb-3">
                             <input 
                                 id="wd-name" 
                                 type="text" 
-                                value={editedAssignment.title} 
-                                onChange={(e) => setEditedAssignment({
-                                    ...editedAssignment, title: e.target.value,
-                                })}
+                                value={title} 
+                                onChange={(e) => setTitle(e.target.value)}
                                 className="form-control" />
                         </div>
 
@@ -72,10 +107,8 @@ export default function AssignmentEditor() {
                             <input 
                                 id="wd-description" 
                                 type="text" 
-                                value={editedAssignment.description} 
-                                onChange={(e) => setEditedAssignment({
-                                    ...editedAssignment, description: e.target.value,
-                                })}
+                                value={description} 
+                                onChange={(e) => setDescription(e.target.value)}
                                 className="form-control" />
                         </div>
 
@@ -91,10 +124,8 @@ export default function AssignmentEditor() {
                                         <input 
                                             id="wd-points" 
                                             className="form-control" 
-                                            value={editedAssignment.points} 
-                                            onChange={(e) => setEditedAssignment({
-                                                ...editedAssignment, points: e.target.value,
-                                            })} />
+                                            value={points} 
+                                            onChange={(e) => setPoints(e.target.value)} />
                                     </div>
                                 </div>
 
@@ -194,10 +225,8 @@ export default function AssignmentEditor() {
                                                 type="datetime-local" 
                                                 id="wd-due-date" 
                                                 className="form-control" 
-                                                value={editedAssignment.due_date_val} 
-                                                onChange={(e) => setEditedAssignment({
-                                                    ...editedAssignment, due_date_val: e.target.value,
-                                                })}/>
+                                                value={dueDay} 
+                                                onChange={(e) => setDueDay(e.target.value)}/>
 
                                             {/* Available from and Until*/}
                                             <div className="d-flex">
@@ -207,10 +236,8 @@ export default function AssignmentEditor() {
                                                         type="datetime-local" 
                                                         id="wd-available-from" 
                                                         className="form-control" 
-                                                        value={editedAssignment.not_available_until_date_val} 
-                                                        onChange={(e) => setEditedAssignment({
-                                                            ...editedAssignment, not_available_until_date_val: e.target.value,
-                                                        })}/>
+                                                        value={availableDay} 
+                                                        onChange={(e) => setAvailableDay(e.target.value)}/>
                                                 </div>
 
                                                 <div className="p-1 me-3 w-50">
@@ -219,10 +246,8 @@ export default function AssignmentEditor() {
                                                         type="datetime-local" 
                                                         id="wd-available-until" 
                                                         className="form-control" 
-                                                        value={editedAssignment.due_date_val} 
-                                                        onChange={(e) => setEditedAssignment({
-                                                            ...editedAssignment, due_date_val: e.target.value,
-                                                        })}/>
+                                                        value={dueDay} 
+                                                        onChange={(e) => setDueDay(e.target.value)}/>
                                                 </div>
                                             </div>
 
@@ -243,42 +268,49 @@ export default function AssignmentEditor() {
                                         - When you click on assignment that's already exist in the DB, tha aid will show up */}
 
                                     {/* This will show up when user click on the "+assignment" button the "Assignments" screen */}
-                                     {!assignment.editing && (
-                                        <Link onClick={() => dispatch(addAssignment(assignment_template))} id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
+                                    {!assignment.editing && (
+                                        <Link onClick={() => 
+                                            dispatch(addAssignment(
+                                                {
+                                                    title,
+                                                    description,
+                                                    course:cid,
+                                                    availableDay, 
+                                                    availableTime, 
+                                                    dueDay,
+                                                    dueTime,
+                                                    points
+                                                }
+                                            ))
+                                        } id="wd-assignment-editor-save" to={`/Kanbas/Courses/${courses && courses._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
                                             Save and Create
                                         </Link>
                                     )}
-                                    
-                                    {/* { aid === "" && (
-                                        <Link onClick={addAssignment} id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
-                                            Save
-                                        </Link>
-                                    )} */}
+                                
                                     
                                     {/* This will show up when user click on the assignment title that is already existed in the "Assignments" screen */}
                                     {assignment.editing && (
-                                        <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end"
+                                        <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${courses && courses._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end"
                                             // Update everything that the user changed
-                                            onChange={() => updateAssignment({...assignment_template})}>
+                                            onClick={() => 
+                                                dispatch(updateAssignment({
+                                                    _id:pickAssignment._id,
+                                                    title,
+                                                    description,
+                                                    course:cid,
+                                                    availableDay, 
+                                                    availableTime, 
+                                                    dueDay,
+                                                    dueTime,
+                                                    points
+                                                }))
+                                            }>
                                                 Save the edit
                                         </Link>
                                     )} 
 
-                                    {/* { aid !== "" && (
-                                        <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end"
-                                            onChange={(e) => setModuleName(e.target.value)}>
-                                                Save
-                                        </Link>
-                                    )} */}
-                                    
 
-                                    {/* If the editing != true, then you are adding a new assignment */}
-                                    {/* <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
-                                        Save
-                                    </Link> */}
-
-
-                                    <Link  id="wd-assignment-editor-cancel" to={`/Kanbas/Courses/${course && course._id}/Assignments`} className="btn btn-lg btn-secondary me-1 float-end">
+                                    <Link  id="wd-assignment-editor-cancel" to={`/Kanbas/Courses/${courses && courses._id}/Assignments`} className="btn btn-lg btn-secondary me-1 float-end">
                                         Cancel
                                     </Link>
                                 </div>
