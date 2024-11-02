@@ -36,7 +36,7 @@ const assignmentsSlice = createSlice({
         // assignment to update is in action.payload replace assignment whose ID matches action.payload._id
         // Also update the points, Due date, available from and until, ...
         updateAssignment: (state, { payload: assignment }) => {
-        state.assignments = state.assignments.map((a: any) =>
+            state.assignments = state.assignments.map((a: any) =>
             a._id === assignment._id ? assignment : a
         ) as any;
         },

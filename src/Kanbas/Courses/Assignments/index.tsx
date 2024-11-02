@@ -17,7 +17,8 @@ import { addAssignment, deleteAssignment, updateAssignment, editAssignment }
   from "./reducer";
 import AssignmentRemover from "./AssignmentRemover";
 import AssignmentCheckingButtons from "./AssignmentCheckingButtons";
-// import AssignmentEditor from "./Editor";
+import AssignmentEditor from "./Editor";
+
 
 export default function Assignments() {
   const { cid, aid } = useParams();
@@ -29,25 +30,15 @@ export default function Assignments() {
 
   // This will create an assignment with an ID, store it in the reducer using the function "addAssignment" so 
   // the website can dynamically rendered the page
+  // <Navigate to={`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`} />
   const handleAddingNewAssignment = () => {
-    dispatch(addAssignment(assignment_template));
     navigate(`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`);
+    // Create an SPA for when clicking on the +Assignment button
+    <Routes>
+      <Route path="Assignments/:aid" element={<AssignmentEditor/>} />
+    </Routes>
   }
-
-  const assignment_template = {
-    _id: aid, 
-    title: "New Assignment", 
-    description : "New Description",
-    course: cid,
-    not_available_until_day: "May 13", 
-    not_available_until_date_val: "2024-05-13T00:00",
-    not_available_until_time: "12:00am",
-    due_day: "May 20",
-    due_date_val: "2024-05-20T23:59",
-    due_time: "11:59pm",  
-    points: 100
-  };
-
+  
   return (
     <div id="wd-assignments">
       { currentUser.role != "FACULTY" && (
@@ -108,7 +99,6 @@ export default function Assignments() {
                       <BsGripVertical className="me-3 fs-3" />
                       <LuNewspaper id="wd-newspaper-icon" className="me-4 fs-3"/>
                     </div>
-
                     <div className="flex-fill">
                         
                       {/* For edit / add I use the editor for both. And essentially if I find an assignment with the 
@@ -123,10 +113,8 @@ export default function Assignments() {
                         className="wd-assignment-link link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">
                         <b>{assignment.title}</b>
                       </Link> <br/>
-                      <p className="text-danger d-inline">Multiple Modules </p>| <b>Not available until</b> {`${assignment.not_available_until_day}`} at {`${assignment.not_available_until_time}`} | <br></br>
-                      <b>Due</b> {`${assignment.due_day}`} at {`${assignment.due_time}`} | {`${assignment.points}`} pts
-
-                        
+                      <p className="text-danger d-inline"> Multiple Modules </p>| <b>Not available until</b> {`${assignment.not_available_until_day_val}`} at {`${assignment.not_available_until_time}`} | <br></br>
+                      <b>Due</b> {`${assignment.due_day_val}`} at {`${assignment.due_time}`} | {`${assignment.points}`} pts
                     </div>
 
 
