@@ -8,14 +8,12 @@ import AssignmentControlButtons from "./AssignmentControlButtons";
 import { LuNewspaper } from "react-icons/lu";
 
 import { Link, Routes, Route, Navigate, useParams, useLocation } from "react-router-dom";
-import * as db from "../../Database";
 // import AssignmentEditor from ".Courses/Assignments/Editor";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addAssignment, deleteAssignment, updateAssignment, editAssignment }
+import { deleteAssignment }
   from "./reducer";
-import AssignmentRemover from "./AssignmentRemover";
 import AssignmentCheckingButtons from "./AssignmentCheckingButtons";
 import AssignmentEditor from "./Editor";
 
@@ -107,14 +105,12 @@ export default function Assignments() {
                       {/* Take a look at this maybe since it's the link to an assignment */}
                       {/* perhaps useParams might be useful  */}
                       <Link 
-                        // Make assignment.edit == true?
-                        onClick={() => dispatch(editAssignment(assignment._id))}
                         to={`${assignment._id}`} 
                         className="wd-assignment-link link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">
                         <b>{assignment.title}</b>
                       </Link> <br/>
-                      <p className="text-danger d-inline"> Multiple Modules </p>| <b>Not available until</b> {`${assignment.not_available_until_day_val}`} at {`${assignment.not_available_until_time}`} | <br></br>
-                      <b>Due</b> {`${assignment.due_day_val}`} at {`${assignment.due_time}`} | {`${assignment.points}`} pts
+                      <p className="text-danger d-inline"> Multiple Modules </p> | <b>Not available until</b> {assignment.available_from.slice(5, 10)} at {assignment.available_from.slice(11, 16)} | <br></br>
+                      <b>Due</b> {assignment.due_date.slice(5, 10)} at {assignment.due_date.slice(11, 16)} | {assignment.points} pts
                     </div>
 
 

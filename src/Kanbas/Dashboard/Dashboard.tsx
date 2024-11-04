@@ -3,21 +3,36 @@ import * as db from "../Database";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 export default function Dashboard(
-    { courses, course, setCourse, addNewCourse,
-        deleteCourse, updateCourse }: {
-        courses: any[]; course: any; setCourse: (course: any) => void;
-        addNewCourse: () => void; deleteCourse: (course: any) => void;
+    { courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }: {
+        courses: any[]; 
+        course: any; 
+        setCourse: (course: any) => void;
+        addNewCourse: () => void; 
+        deleteCourse: (course: any) => void;
         updateCourse: () => void; }) {
     
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const { enrollments } = db;
+
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
 
 
+            {/* Only STUDENT role can have an Enrollments button */}
+            {currentUser && currentUser.role !== "FACULTY" && (
+                <button className="btn btn-primary float-end"
+                id="wd-enroll-new-course-click"
+                onClick={() => {
+                    // When clicking, render a different screen
+                }}> 
+                Enrollments  
+            </button>
+            )}
+
+
             {/* Only FACULTY role can add courses */}
-            { currentUser.role == "FACULTY" && (
+            {currentUser && currentUser.role == "FACULTY" && (
                 <div>
                     <h5>New Course
                         <button className="btn btn-primary float-end"
@@ -41,8 +56,9 @@ export default function Dashboard(
             )}
             
 
-
-            <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
+            {/* {courses.filter((course) => enrollments.some((enrollment:any) => enrollment.user === currentUser._id && enrollment.course === course._id )).length} */}
+            <h2 id="wd-dashboard-published">Published Courses ({courses.length})
+            </h2> <hr />
             <div id="wd-dashboard-courses" className="row">
                 <div className="row row-cols-1 row-cols-md-5 g-4">
                     {courses.filter((course) =>

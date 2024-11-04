@@ -36,17 +36,21 @@ export default function AssignmentEditor() {
         // points: 100
     // };
 
+    console.log(JSON.stringify(assignments))
+
     // default template of the assignment
     let assignment = {
         _id: aid, 
         title: "New Assignment", 
-        description : "New Description",
+        
         course: cid,
-        not_available_until_date_val: "2024-05-13",
-        not_available_until_time: "12:00am",
-        due_date_val: "2024-05-20",
-        due_time: "11:59pm",  
-        points: "100"
+        available_from: new Date().toISOString().slice(0, 10),
+        // not_available_until_time: new Date().toISOString().slice(10, 16),
+        due_date: new Date().toISOString().slice(0, 10),
+        // due_time: new Date().toISOString().slice(10, 16),  
+        points: "100",
+        until_date: "",
+        description : "New Description",
     }
     
     // Which ever you select will be the "template"
@@ -73,10 +77,10 @@ export default function AssignmentEditor() {
     const [title, setTitle] = useState(assignment.title);
     const [description, setDescription] = useState(assignment.description);
     // const [availableDayVal, setAvailableDayVal] = useState(assignment.not_available_until_date_val);
-    const [availableDay, setAvailableDay] = useState(assignment.not_available_until_date_val);
-    const [availableTime, setAvailableTime] = useState(assignment.not_available_until_time);
-    const [dueDay, setDueDay] = useState(assignment.due_date_val);
-    const [dueTime, setDueTime] = useState(assignment.due_time);
+    const [availableDay, setAvailableDay] = useState(assignment.available_from);
+    // const [availableTime, setAvailableTime] = useState(assignment.not_available_until_time);
+    const [dueDay, setDueDay] = useState(assignment.due_date);
+    const [untilDay, setUntilDay] = useState(assignment.until_date);
     const [points, setPoints] = useState(assignment.points);
     
     // const [editedAssignment, setEditedAssignment] = useState(assignment);
@@ -239,7 +243,7 @@ export default function AssignmentEditor() {
                                 {/* Due */}
                                 <label htmlFor="wd-due-date" className="ms-3 me-3 mb-2"><b>Due</b></label>
                                 <input 
-                                    type="date" 
+                                    type="datetime-local" 
                                     id="wd-due-date" 
                                     className="form-control" 
                                     value={dueDay} 
@@ -251,7 +255,7 @@ export default function AssignmentEditor() {
                                     <div className="p-1 ms-3 me-3 mb-2 w-50">
                                         <label htmlFor="wd-available-from"><b>Available from</b></label>
                                         <input 
-                                            type="date" 
+                                            type="datetime-local" 
                                             id="wd-available-from" 
                                             className="form-control" 
                                             value={availableDay} 
@@ -262,7 +266,7 @@ export default function AssignmentEditor() {
                                     <div className="p-1 me-3 w-50">
                                         <label htmlFor="wd-available-until"><b>Until</b></label>
                                         <input 
-                                            type="date" 
+                                            type="datetime-local" 
                                             id="wd-available-until" 
                                             className="form-control" 
                                             value={dueDay} 
@@ -335,25 +339,23 @@ export default function AssignmentEditor() {
                                             dispatch(updateAssignment({
                                                 _id:pickAssignment._id,
                                                 title,
-                                                description,
                                                 course:cid,
                                                 availableDay, 
-                                                availableTime, 
                                                 dueDay,
-                                                dueTime,
-                                                points
+                                                points,
+                                                untilDay,
+                                                description,
                                             }))
                                         }else{
                                             dispatch(addAssignment(
                                                 {
                                                     title,
-                                                    description,
                                                     course:cid,
                                                     availableDay, 
-                                                    availableTime, 
                                                     dueDay,
-                                                    dueTime,
-                                                    points
+                                                    points,
+                                                    untilDay,
+                                                    description,
                                                 }
                                             ))
                                         }

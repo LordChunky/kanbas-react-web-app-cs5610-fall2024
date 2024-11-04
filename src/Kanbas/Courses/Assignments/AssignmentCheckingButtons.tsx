@@ -10,18 +10,19 @@ export default function AssignmentCheckingButtons(
         deleteAssignment: (assignmentId: string) => void;
     }
 ) {
-  return (
-    <div className="float-end">
-        <FaTrash 
-            className="text-danger me-2 mb-1"
-            data-bs-toggle="modal" 
-            data-bs-target="#wd-delete-assignment-dialog"
-        />
-        <GreenCheckmark />
-        <IoEllipsisVertical className="fs-4" />
-        <AssignmentRemover 
-            assignmentId={assignmentId}
-            deleteAssignment={deleteAssignment}/>
-    </div>
+    console.log(assignmentId)
+    return (
+        <div className="float-end">
+            <FaTrash 
+                className="text-danger me-2 mb-1"
+                data-bs-toggle="modal" 
+                data-bs-target={`#${assignmentId}`}
+            />
+            <GreenCheckmark />
+            <IoEllipsisVertical className="fs-4" />
+            <AssignmentRemover 
+                assignmentId={assignmentId}
+                deleteAssignment={deleteAssignment}/>
+        </div>
     );
 }

@@ -15,13 +15,10 @@ const assignmentsSlice = createSlice({
             title: assignment.title, 
             description: assignment.description,
             course: assignment.course, 
-            not_available_until_day: assignment.not_available_until_day, 
-            not_available_until_date_val: assignment.not_available_until_date_val,
-            not_available_until_time: assignment.not_available_until_time,
-            due_day: assignment.due_day,
-            due_date_val: assignment.due_date_val,
-            due_time: assignment.due_time, 
-            points: assignment.points
+            available_from: new Date().toISOString().slice(0, 16),
+            due_date: new Date().toISOString().slice(0, 16),
+            points: assignment.points,
+            until_date: new Date().toISOString().slice(0, 16)
         };
         state.assignments = [...state.assignments, newAssignment] as any;
         },
@@ -40,16 +37,10 @@ const assignmentsSlice = createSlice({
             a._id === assignment._id ? assignment : a
         ) as any;
         },
-        // select the assignment to edit (select the right module using the assignmentId)
-        editAssignment: (state, { payload: assignmentId }) => {
-        state.assignments = state.assignments.map((a: any) =>
-            a._id === assignmentId ? { ...a, editing: true } : a
-        ) as any;
-        },
     },
 });
 // export all reducer functions
-export const { addAssignment, deleteAssignment, updateAssignment, editAssignment } = assignmentsSlice.actions;
+export const { addAssignment, deleteAssignment, updateAssignment } = assignmentsSlice.actions;
 // export reducer
 export default assignmentsSlice.reducer;
 

@@ -6,7 +6,6 @@ import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import { FaAlignJustify } from "react-icons/fa6";
 import PeopleTable from "./People/Table";
-import { addAssignment } from "./Assignments/reducer";
 import { useDispatch } from "react-redux";
 
 // "{ courses }: { courses: any[]; }" will load courses from Kanbas instead of database

@@ -9,6 +9,8 @@ import { useState } from "react";
 import store from "./store"; // import the redux store
 import { Provider } from "react-redux"; // import the redux store Provider
 import ProtectedRoute from "./Account/ProtectedRoute";
+// import { addCourse, deleteCourse, updateCourse, setCourse }
+//   from "./Dashboard/Courses/reducer";
 
 export default function Kanbas() {
   // State variables
@@ -23,6 +25,7 @@ export default function Kanbas() {
   const addNewCourse = () => {
     setCourses([...courses, { ...course, _id: new Date().getTime().toString() }]);
   };
+  
   const deleteCourse = (courseId: any) => {
     setCourses(courses.filter((course) => course._id !== courseId));
   };
@@ -37,6 +40,8 @@ export default function Kanbas() {
       })
     );
   };
+
+
 
   return (
     // wrap your application with the Provider so all child elements can read and write to the store
