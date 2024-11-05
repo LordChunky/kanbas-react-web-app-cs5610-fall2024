@@ -28,30 +28,30 @@ export default function Dashboard(
     // A toggler for rendering a part of the page
     const toggleShowAllCourses = () => {
         if(showAllCourses || currentUser.role === "FACULTY") {
-        setCourses(
-            db.courses.filter( (course) => 
-            enrollments.some(
-            (enrollment: any) => 
-            enrollment.user === currentUser._id && 
-            enrollment.course === course._id)
-            ).map((course:any) => ({...course, courseEnrolled: true}))
-        )
-        setShowAllCourses(false)
-        } else {
-        setCourses(
-            db.courses.map((course) => {
-                if(enrollments.some(
-                (enrollment: any) => 
-                    enrollment.user === currentUser._id && 
-                    enrollment.course === course._id)){
-                    return {...course, courseEnrolled: true}
-                } else {
-                return {...course, courseEnrolled: false}
-                }
-            }
+            setCourses(
+                db.courses.filter( (course) => 
+                    enrollments.some(
+                    (enrollment: any) => 
+                        enrollment.user === currentUser._id && 
+                        enrollment.course === course._id
+                )).map((course:any) => ({...course, courseEnrolled: true}))
             )
-        )
-        setShowAllCourses(true)
+            setShowAllCourses(false)
+        } else {
+            setCourses(
+                db.courses.map((course) => {
+                    if(enrollments.some(
+                    (enrollment: any) => 
+                        enrollment.user === currentUser._id && 
+                        enrollment.course === course._id)){
+                        return {...course, courseEnrolled: true}
+                    } else {
+                        return {...course, courseEnrolled: false}
+                    }
+                }
+                )
+            )
+            setShowAllCourses(true)
         }
     }
 
@@ -143,6 +143,8 @@ export default function Dashboard(
                                     </div>
                                 </div>
                             ))
+
+                            
                             }
                         </div>
                     </div>
@@ -210,42 +212,6 @@ export default function Dashboard(
                                         <p className="wd-dashboard-course-title card-text overflow-y-hidden" style={{ maxHeight: 100 }}>
                                             {course.description} </p>
                                         <button className="btn btn-primary"> Go </button>
-
-
-                                        {/* Only STUDENT role can enroll or unenroll courses */}
-
-                                        {/* If the course is enrolled, show the student option to unenroll */}
-                                        { currentUser && currentUser.role !== "FACULTY" && course.courseEnrolled === true &&(
-                                            <span>
-                                                <button onClick={(event) => {
-                                                    event.preventDefault();
-                                                    dispatch(unenrollCourse({
-                                                        course: course._id,
-                                                        user: currentUser._id
-                                                    }));
-                                                    }} className="btn btn-danger float-end"
-                                                    id="wd-delete-course-click">
-                                                    Unenroll
-                                                </button>
-                                            </span>
-                                        )}
-
-                                        {/* If the course is unenrolled, show the student option to enroll */}
-                                        { currentUser && currentUser.role !== "FACULTY" && course.courseEnrolled === false &&(
-                                            <span>
-                                                <button onClick={(event) => {
-                                                    event.preventDefault();
-                                                    dispatch(enrollCourse({
-                                                        course: course._id,
-                                                        user: currentUser._id
-                                                    }));
-                                                    }} className="btn btn-success float-end"
-                                                    id="wd-delete-course-click">
-                                                    Enroll
-                                                </button>
-                                            </span>
-                                        )}
-
 
                                         {/* Only FACULTY role can delete or edit courses */}
                                         { currentUser && currentUser.role === "FACULTY" && (
