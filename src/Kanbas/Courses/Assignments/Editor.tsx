@@ -42,14 +42,13 @@ export default function AssignmentEditor() {
     let assignment = {
         _id: aid, 
         title: "New Assignment", 
-        
         course: cid,
         available_from: new Date().toISOString().slice(0, 10),
         // not_available_until_time: new Date().toISOString().slice(10, 16),
         due_date: new Date().toISOString().slice(0, 10),
         // due_time: new Date().toISOString().slice(10, 16),  
         points: "100",
-        until_date: "",
+        until_date: new Date().toISOString().slice(0, 10),
         description : "New Description",
     }
     
@@ -93,8 +92,8 @@ export default function AssignmentEditor() {
     //     dispatch(addAssignment(assignment_template));
     //     navigate(`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`);
     // }
-    console.log(dueDay); 
-    console.log(availableDay); 
+    // console.log(dueDay); 
+    // console.log(availableDay); 
     return (
         // <div>
         //     {/* if aid = new Date().getTime().toString() */}
@@ -269,8 +268,8 @@ export default function AssignmentEditor() {
                                             type="datetime-local" 
                                             id="wd-available-until" 
                                             className="form-control" 
-                                            value={dueDay} 
-                                            onChange={(e) => setDueDay(e.target.value)}/>
+                                            value={untilDay} 
+                                            onChange={(e) => setUntilDay(e.target.value)}/>
                                     </div>
                                 </div>
 
@@ -337,25 +336,25 @@ export default function AssignmentEditor() {
                                     {
                                         if(pickAssignment){
                                             dispatch(updateAssignment({
-                                                _id:pickAssignment._id,
-                                                title,
-                                                course:cid,
-                                                availableDay, 
-                                                dueDay,
-                                                points,
-                                                untilDay,
-                                                description,
+                                                _id: pickAssignment._id,
+                                                title: title,
+                                                course: cid,
+                                                available_from: availableDay, 
+                                                due_date: dueDay,
+                                                points: points,
+                                                until_date: untilDay,
+                                                description: description
                                             }))
                                         }else{
                                             dispatch(addAssignment(
                                                 {
-                                                    title,
-                                                    course:cid,
-                                                    availableDay, 
-                                                    dueDay,
-                                                    points,
-                                                    untilDay,
-                                                    description,
+                                                    title: title,
+                                                    course: cid,
+                                                    available_from: availableDay, 
+                                                    due_date: dueDay,
+                                                    points: points,
+                                                    until_date: untilDay,
+                                                    description: description
                                                 }
                                             ))
                                         }
