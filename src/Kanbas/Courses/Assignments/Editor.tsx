@@ -33,16 +33,6 @@ export default function AssignmentEditor() {
         assignment = pickAssignment
     }
 
-    // Have like a function that convert datetime-local into the format that you want
-    // Something like this
-    // const handleChange = (event) => {
-    //     const date = new Date(event.target.value);
-    //     const month = date.toLocaleString('default', { month: 'long' });
-    //     const day = date.getDate();
-    
-    //     setDateValue(`${month} ${day}`);
-    // };
-
 
     // All of these variable are State variable, which is essentially a record of object that got saved and might be able to use it later
     // "availableDay" and "availableDayVal" are 2 different variables: "availableDay" is a "Month Day" format and "availableDayVal" 
@@ -50,19 +40,13 @@ export default function AssignmentEditor() {
     // that converts the datetime-local string into a string of format to your liking
     const [title, setTitle] = useState(assignment.title);
     const [description, setDescription] = useState(assignment.description);
-    // const [availableDayVal, setAvailableDayVal] = useState(assignment.not_available_until_date_val);
     const [availableDay, setAvailableDay] = useState(assignment.available_from);
-    // const [availableTime, setAvailableTime] = useState(assignment.not_available_until_time);
     const [dueDay, setDueDay] = useState(assignment.due_date);
     const [untilDay, setUntilDay] = useState(assignment.until_date);
     const [points, setPoints] = useState(assignment.points);
     
     return (
         <div id="wd-assignments-editor">
-                        
-            {/* {!assignment.editing && ()} */}
-            {/* { assignment.editing && ()} */}
-
             {/*Assignment Name */}
             <label htmlFor="wd-name">Assignment Name</label>
             <div className="input-group mb-3">
@@ -90,7 +74,6 @@ export default function AssignmentEditor() {
                 <div className="mt-3 float-end w-100">
                     
                     {/* Points */}
-                    {/* { assignment.editing &&(...)} */}
                     <div className="form-group row">
                         <div className="input-group mb-3">
                             <label htmlFor="wd-points" className="text-end col-sm-3 col-form-label me-3">Points</label>

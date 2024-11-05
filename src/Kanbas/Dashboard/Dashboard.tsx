@@ -25,7 +25,7 @@ export default function Dashboard(
     const [showAllCourses, setShowAllCourses] = useState(false);
 
 
-    // A toggler for rendering a part of the page
+    // A page toggler for rendering all courses for the student to choose
     const toggleShowAllCourses = () => {
         if(showAllCourses || currentUser.role === "FACULTY") {
             setCourses(
@@ -57,7 +57,7 @@ export default function Dashboard(
 
 
 
-    console.log(showAllCourses)
+    // console.log(showAllCourses)
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
@@ -189,8 +189,7 @@ export default function Dashboard(
                     </h2> <hr />
                 </div>
             )}
-            {/* <h2 id="wd-dashboard-published">Published Courses ({courses.filter((course) => enrollments.some((enrollment:any) => enrollment.user === currentUser._id && enrollment.course === course._id )).length})
-            </h2> <hr /> */}
+
             <div id="wd-dashboard-courses" className="row">
                 <div className="row row-cols-1 row-cols-md-5 g-4">
                     {/* If you click on the Enrollment button, the "Published Courses" automatically "collapse" so you can see all course but the

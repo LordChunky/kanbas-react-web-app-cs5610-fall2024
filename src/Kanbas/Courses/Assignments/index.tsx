@@ -42,7 +42,6 @@ export default function Assignments() {
 
   // This will create an assignment with an ID, store it in the reducer using the function "addAssignment" so 
   // the website can dynamically rendered the page
-  // <Navigate to={`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`} />
   const handleAddingNewAssignment = () => {
     navigate(`/Kanbas/Courses/${cid}/Assignments/${new Date().getTime().toString()}`);
     // Create an SPA for when clicking on the +Assignment button
