@@ -3,18 +3,18 @@ import * as db from "../Database";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {unenrollCourse, enrollCourse} from "./Enrollment/reducer";
-import { addCourse, deleteCourse, updateCourse }
-  from "./Courses/reducer";
+// import { addCourse, deleteCourse, updateCourse }
+//   from "./Courses/reducer";
 export default function Dashboard(
-    // { courses, course, pageToggle, setCourse, addNewCourse, deleteCourse, updateCourse, togglePage }: {
-    //     courses: any[]; 
-    //     course: any; 
-    //     pageToggle: boolean;
-    //     setCourse: (course: any) => void;
-    //     addNewCourse: () => void; 
-    //     deleteCourse: (course: any) => void;
-    //     updateCourse: () => void;
-    //     togglePage: () => void }
+    { courses, course, setCourse, setCourses, addNewCourse, deleteCourse, updateCourse }: {
+        courses: any[]; 
+        course: any;
+        setCourse: (course: any) => void;
+        setCourses: (course: any) => void;
+        addNewCourse: () => void; 
+        deleteCourse: (course: any) => void;
+        updateCourse: () => void;
+    }
     ) {
     
     const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -23,18 +23,6 @@ export default function Dashboard(
 
 
     const [showAllCourses, setShowAllCourses] = useState(false);
-  
-    const [courses, setCourses] = useState<any[]>(db.courses.filter((course) =>
-        enrollments.some(
-        (enrollment:any) =>
-        enrollment.course === course._id))
-    );
-    
-    const [course, setCourse] = useState<any>({
-    _id: "1234", name: "New Course", number: "New Number",
-    startDate: "2023-09-10", endDate: "2023-12-15", 
-    image: "/images/pain.jpeg", description: "New Description",
-    });
 
 
     // A toggler for rendering a part of the page
@@ -167,11 +155,11 @@ export default function Dashboard(
                     <h5>New Course
                         <button className="btn btn-primary float-end"
                             id="wd-add-new-course-click"
-                            onClick={() => addCourse(courses)} > 
+                            onClick={addNewCourse} > 
                             Add 
                         </button>
                         <button className="btn btn-warning float-end me-2"
-                            onClick={() => updateCourse(courses)} id="wd-update-course-click">
+                            onClick={updateCourse} id="wd-update-course-click">
                             Update
                         </button>
                     </h5> <br />

@@ -15,70 +15,38 @@ export default function Kanbas() {
   // State variables
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
-
-  // const [pageToggle, setPageToggle] = useState(false);
   
   const [courses, setCourses] = useState<any[]>(db.courses.filter((course) =>
     enrollments.some(
     (enrollment:any) =>
     enrollment.course === course._id))
   );
-  // const [course, setCourse] = useState<any>({
-  //   _id: "1234", name: "New Course", number: "New Number",
-  //   startDate: "2023-09-10", endDate: "2023-12-15", 
-  //   image: "/images/pain.jpeg", description: "New Description",
-  // });
+  const [courseTemplate, setCourseTemplate] = useState<any>({
+    _id: "1234", name: "New Course", number: "New Number",
+    startDate: "2023-09-10", endDate: "2023-12-15", 
+    image: "/images/pain.jpeg", description: "New Description",
+  });
 
 
   // Functions
-  // const addNewCourse = () => {
-  //   setCourses([...courses, { ...course, _id: new Date().getTime().toString() }]);
-  // };
+  const addNewCourse = () => {
+    setCourses([...courses, { ...courseTemplate, _id: new Date().getTime().toString() }]);
+  };
   
-  // const deleteCourse = (courseId: any) => {
-  //   setCourses(courses.filter((course) => course._id !== courseId));
-  // };
-  // const updateCourse = () => {
-  //   setCourses(
-  //     courses.map((c) => {
-  //       if (c._id === course._id) {
-  //         return course;
-  //       } else {
-  //         return c;
-  //       }
-  //     })
-  //   );
-  // };
-
-  // A toggler for rendering a part of the page
-  // const togglePage = () => {
-  //     if(pageToggle || currentUser.role === "FACULTY") {
-  //       setCourses(
-  //         db.courses.filter( (course) => 
-  //           enrollments.some(
-  //           (enrollment: any) => 
-  //           enrollment.user === currentUser._id && 
-  //           enrollment.course === course._id)
-  //         ).map((course:any) => ({...course, courseEnrolled: true}))
-  //       )
-  //       setPageToggle(false)
-  //     } else {
-  //       setCourses(
-  //         db.courses.map((course) => {
-  //             if(enrollments.some(
-  //               (enrollment: any) => 
-  //                 enrollment.user === currentUser._id && 
-  //                 enrollment.course === course._id)){
-  //                 return {...course, courseEnrolled: true}
-  //             } else {
-  //               return {...course, courseEnrolled: false}
-  //             }
-  //           }
-  //         )
-  //       )
-  //       setPageToggle(true)
-  //     }
-  // }
+  const deleteCourse = (courseId: any) => {
+    setCourses(courses.filter((course) => course._id !== courseId));
+  };
+  const updateCourse = () => {
+    setCourses(
+      courses.map((c) => {
+        if (c._id === courseTemplate._id) {
+          return courseTemplate;
+        } else {
+          return c;
+        }
+      })
+    );
+  };
 
 
   return (
@@ -92,14 +60,13 @@ export default function Kanbas() {
             <Route path="/Dashboard" element={
               <ProtectedRoute>
                 <Dashboard
-                  // courses={courses}
-                  // course={course}
-                  // setCourse={setCourse}
-                  // addNewCourse={addNewCourse}
-                  // deleteCourse={deleteCourse}
-                  // updateCourse={updateCourse}
-                  // togglePage={togglePage}
-                  // pageToggle={pageToggle}
+                  courses={courses}
+                  course={courseTemplate}
+                  setCourse={setCourseTemplate}
+                  setCourses={setCourses}
+                  addNewCourse={addNewCourse}
+                  deleteCourse={deleteCourse}
+                  updateCourse={updateCourse}
                 /> 
               </ProtectedRoute>
             } />
