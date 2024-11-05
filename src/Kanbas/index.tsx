@@ -6,73 +6,112 @@ import Dashboard from "./Dashboard/Dashboard";
 import Courses from "./Courses";
 import * as db from "./Database";
 import { useState } from "react";
-import store from "./store"; // import the redux store
-import { Provider } from "react-redux"; // import the redux store Provider
+import { useSelector } from "react-redux"; // import the redux store Provider
 import ProtectedRoute from "./Account/ProtectedRoute";
 // import { addCourse, deleteCourse, updateCourse, setCourse }
 //   from "./Dashboard/Courses/reducer";
 
 export default function Kanbas() {
   // State variables
-  const [courses, setCourses] = useState<any[]>(db.courses);
-  const [course, setCourse] = useState<any>({
-    _id: "1234", name: "New Course", number: "New Number",
-    startDate: "2023-09-10", endDate: "2023-12-15", 
-    image: "/images/pain.jpeg", description: "New Description",
-  });
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
+
+  // const [pageToggle, setPageToggle] = useState(false);
+  
+  const [courses, setCourses] = useState<any[]>(db.courses.filter((course) =>
+    enrollments.some(
+    (enrollment:any) =>
+    enrollment.course === course._id))
+  );
+  // const [course, setCourse] = useState<any>({
+  //   _id: "1234", name: "New Course", number: "New Number",
+  //   startDate: "2023-09-10", endDate: "2023-12-15", 
+  //   image: "/images/pain.jpeg", description: "New Description",
+  // });
+
 
   // Functions
-  const addNewCourse = () => {
-    setCourses([...courses, { ...course, _id: new Date().getTime().toString() }]);
-  };
+  // const addNewCourse = () => {
+  //   setCourses([...courses, { ...course, _id: new Date().getTime().toString() }]);
+  // };
   
-  const deleteCourse = (courseId: any) => {
-    setCourses(courses.filter((course) => course._id !== courseId));
-  };
-  const updateCourse = () => {
-    setCourses(
-      courses.map((c) => {
-        if (c._id === course._id) {
-          return course;
-        } else {
-          return c;
-        }
-      })
-    );
-  };
+  // const deleteCourse = (courseId: any) => {
+  //   setCourses(courses.filter((course) => course._id !== courseId));
+  // };
+  // const updateCourse = () => {
+  //   setCourses(
+  //     courses.map((c) => {
+  //       if (c._id === course._id) {
+  //         return course;
+  //       } else {
+  //         return c;
+  //       }
+  //     })
+  //   );
+  // };
 
+  // A toggler for rendering a part of the page
+  // const togglePage = () => {
+  //     if(pageToggle || currentUser.role === "FACULTY") {
+  //       setCourses(
+  //         db.courses.filter( (course) => 
+  //           enrollments.some(
+  //           (enrollment: any) => 
+  //           enrollment.user === currentUser._id && 
+  //           enrollment.course === course._id)
+  //         ).map((course:any) => ({...course, courseEnrolled: true}))
+  //       )
+  //       setPageToggle(false)
+  //     } else {
+  //       setCourses(
+  //         db.courses.map((course) => {
+  //             if(enrollments.some(
+  //               (enrollment: any) => 
+  //                 enrollment.user === currentUser._id && 
+  //                 enrollment.course === course._id)){
+  //                 return {...course, courseEnrolled: true}
+  //             } else {
+  //               return {...course, courseEnrolled: false}
+  //             }
+  //           }
+  //         )
+  //       )
+  //       setPageToggle(true)
+  //     }
+  // }
 
 
   return (
-    // wrap your application with the Provider so all child elements can read and write to the store
-    <Provider store={store}>
-      <div id="wd-kanbas">
-        <KanbasNavigation />
-        <div className="wd-main-content-offset p-3">
-            <Routes>
-              <Route path="/" element={<Navigate to="/Kanbas/Account" />} />
-              <Route path="/Account/*" element={<Account />} />
-              <Route path="/Dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard
-                    courses={courses}
-                    course={course}
-                    setCourse={setCourse}
-                    addNewCourse={addNewCourse}
-                    deleteCourse={deleteCourse}
-                    updateCourse={updateCourse}/> 
-                </ProtectedRoute>
-              } />
-              <Route path="/Courses/:cid/*" element={
-                <ProtectedRoute>
-                  <Courses courses={courses} />
-                </ProtectedRoute>} />
-              <Route path="/Calendar" element={<h1>Calendar</h1>} />
-              <Route path="/Inbox" element={<h1>Inbox</h1>} />
-            </Routes>
-        </div>
+    // no longer need to wrap this part with "<Provider store={store}>" since it has already been wrapped in App.tsx
+    <div id="wd-kanbas">
+      <KanbasNavigation />
+      <div className="wd-main-content-offset p-3">
+          <Routes>
+            <Route path="/" element={<Navigate to="/Kanbas/Account" />} />
+            <Route path="/Account/*" element={<Account />} />
+            <Route path="/Dashboard" element={
+              <ProtectedRoute>
+                <Dashboard
+                  // courses={courses}
+                  // course={course}
+                  // setCourse={setCourse}
+                  // addNewCourse={addNewCourse}
+                  // deleteCourse={deleteCourse}
+                  // updateCourse={updateCourse}
+                  // togglePage={togglePage}
+                  // pageToggle={pageToggle}
+                /> 
+              </ProtectedRoute>
+            } />
+            <Route path="/Courses/:cid/*" element={
+              <ProtectedRoute>
+                <Courses courses={courses} />
+              </ProtectedRoute>} />
+            <Route path="/Calendar" element={<h1>Calendar</h1>} />
+            <Route path="/Inbox" element={<h1>Inbox</h1>} />
+          </Routes>
       </div>
-    </Provider>
+    </div>
   );
 }
   

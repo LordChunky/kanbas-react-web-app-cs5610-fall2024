@@ -10,13 +10,13 @@ const enrollmentsSlice = createSlice({
     // declare reducer functions
     reducers: {
         enrollCourse: (state, action) => { 
-            state.enrollments = [
-                ...state.enrollments,
-                {...action.payload, _id: new Date().getTime().toString()}
-            ] as any;        
+            const newEnrollment: any = {
+                ...action.payload, 
+                _id: new Date().getTime().toString()
+            }
+            state.enrollments = [...state.enrollments, newEnrollment] as any;        
         },
-
-        // 
+        
         unenrollCourse: (state, action) => { 
             state.enrollments = state.enrollments.filter(
             (e: any) => e.user !== action.payload.user && e.course !== action.payload.course);

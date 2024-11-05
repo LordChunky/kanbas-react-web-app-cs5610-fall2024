@@ -17,6 +17,20 @@ import { deleteAssignment }
 import AssignmentCheckingButtons from "./AssignmentCheckingButtons";
 import AssignmentEditor from "./Editor";
 
+// Helper functions for month and time formatting
+function convertMonth(monthString: string){
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+  var month_index =  parseInt(monthString,10) - 1;
+  return months[month_index];
+}
+
+// timeString format of "00:00"
+function convertTime(timeString: string){
+  const timeString12hr = new Date('1970-01-01T' + timeString + 'Z').toLocaleTimeString('en-US', {timeZone:'UTC', hour12:true, hour:'numeric', minute:'numeric'});
+  return timeString12hr.toString();
+}
+
 
 export default function Assignments() {
   const { cid, aid } = useParams();
@@ -109,8 +123,8 @@ export default function Assignments() {
                         className="wd-assignment-link link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">
                         <b>{assignment.title}</b>
                       </Link> <br/>
-                      <p className="text-danger d-inline"> Multiple Modules </p> | <b>Not available until</b> {assignment.available_from.slice(5, 10)} at {assignment.available_from.slice(11, 16)} | <br></br>
-                      <b>Due</b> {assignment.due_date.slice(5, 10)} at {assignment.due_date.slice(11, 16)} | {assignment.points} pts
+                      <p className="text-danger d-inline"> Multiple Modules </p> | <b>Not available until</b> {convertMonth(assignment.available_from.slice(5, 8))} {assignment.available_from.slice(8, 10)} at {convertTime(assignment.available_from.slice(11, 16))} | <br></br>
+                      <b>Due</b> {convertMonth(assignment.due_date.slice(5, 8))} {assignment.due_date.slice(8, 10)} at {convertTime(assignment.due_date.slice(11, 16))} | {assignment.points} pts
                     </div>
 
 

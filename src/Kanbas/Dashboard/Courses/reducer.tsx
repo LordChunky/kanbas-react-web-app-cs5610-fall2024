@@ -36,14 +36,10 @@ const coursesSlice = createSlice({
                 // return c._id === action.payload._id ? action.payload._id : c;
               }) as any;
         },
-
-        setCourse: (state, action) => {
-            state.courses = action.payload
-        }
     },
 });
 // export all reducer functions
-export const { addCourse, deleteCourse, updateCourse, setCourse} = coursesSlice.actions;
+export const { addCourse, deleteCourse, updateCourse} = coursesSlice.actions;
 // export reducer
 export default coursesSlice.reducer;
 
