@@ -8,7 +8,6 @@ import * as db from "./Database";
 import { useState } from "react";
 import { useSelector } from "react-redux"; // import the redux store Provider
 import ProtectedRoute from "./Account/ProtectedRoute";
-import ProtectedDashboard from "./Dashboard/ProtectedDashboard";
 // import { addCourse, deleteCourse, updateCourse, setCourse }
 //   from "./Dashboard/Courses/reducer";
 
@@ -59,7 +58,7 @@ export default function Kanbas() {
             <Route path="/" element={<Navigate to="/Kanbas/Account" />} />
             <Route path="/Account/*" element={<Account />} />
             <Route path="/Dashboard" element={
-              <ProtectedDashboard>
+              <ProtectedRoute>
                 <Dashboard
                   courses={courses}
                   course={courseTemplate}
@@ -69,7 +68,7 @@ export default function Kanbas() {
                   deleteCourse={deleteCourse}
                   updateCourse={updateCourse}
                 /> 
-              </ProtectedDashboard>
+              </ProtectedRoute>
             } />
             <Route path="/Courses/:cid/*" element={
               <ProtectedRoute>
