@@ -13,7 +13,7 @@ export default function App() {
         <div>
         <Routes>
           {/* Default navigation to Kanbas */}
-          <Route path="/" element={<Navigate to="Kanbas/Dashboard"/>}/>
+          <Route path="/" element={<Navigate to="Kanbas/Account/Signin"/>}/>
           <Route path="/Labs/*" element={<Labs />} />
           <Route path="/Kanbas/*" element={<Kanbas />} />
         </Routes>
