@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { modules } from "../../Database";
+// import { modules } from "../../Database";
 const initialState = {
-  modules: modules,
+    modules: [],
 };
 const modulesSlice = createSlice({
     name: "modules", // name the slice
@@ -9,6 +9,10 @@ const modulesSlice = createSlice({
     
     // declare reducer functions
     reducers: {
+        setModules: (state, action) => {
+            state.modules = action.payload;
+        },
+      
         addModule: (state, { payload: module }) => { // new module is in action.payload
         const newModule: any = { // update modules in state adding new module
             _id: new Date().getTime().toString(), // at beginning of array. Override _id with timestamp
@@ -40,7 +44,6 @@ const modulesSlice = createSlice({
     },
 });
 // export all reducer functions
-export const { addModule, deleteModule, updateModule, editModule } =
-  modulesSlice.actions;
+export const { addModule, deleteModule, updateModule, editModule, setModules} = modulesSlice.actions;
 // export reducer
 export default modulesSlice.reducer;

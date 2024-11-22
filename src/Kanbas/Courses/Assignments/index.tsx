@@ -12,10 +12,15 @@ import { Link, Routes, Route, Navigate, useParams, useLocation } from "react-rou
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteAssignment }
-  from "./reducer";
+import { setAssignments, deleteAssignment } from "./reducer";
+import { useState, useEffect } from "react";
 import AssignmentCheckingButtons from "./AssignmentCheckingButtons";
 import AssignmentEditor from "./Editor";
+
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
+
+
 
 // Helper functions for month and time formatting
 function convertMonth(monthString: string){
@@ -49,6 +54,23 @@ export default function Assignments() {
       <Route path="Assignments/:aid" element={<AssignmentEditor/>} />
     </Routes>
   }
+
+  // Fetch all assignments
+  const fetchAssignments = async () => {
+    const assignments = await coursesClient.findAllAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  // remove assignment
+  const removeAssignment = async (assignmentId: string) => {
+    await assignmentsClient.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
+
+
   
   return (
     <div id="wd-assignments">
@@ -100,9 +122,7 @@ export default function Assignments() {
         
         {/* Assignment List */}
         <ul id="wd-assignment-list" className="list-group rounded-0">
-          {assignments
-            .filter((assignment: any) => assignment.course === cid)
-            .map((assignment: any) => (
+          {assignments.map((assignment: any) => (
               <li className="wd-assignment-list-item list-group-item ps-1">
                 <div className="d-flex text-nowrap">
                   
@@ -131,9 +151,7 @@ export default function Assignments() {
                       <div className="float-start d-flex align-items-center">
                         <AssignmentCheckingButtons 
                           assignmentId={assignment._id}
-                          deleteAssignment={(assignmentId) => {
-                            dispatch(deleteAssignment(assignmentId));
-                          }}/>
+                          deleteAssignment={(assignmentId) => removeAssignment(assignmentId)}/>
                       </div>
                     )}
                     

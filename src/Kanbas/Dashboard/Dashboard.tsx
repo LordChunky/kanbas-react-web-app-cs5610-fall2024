@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import * as db from "../Database";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {unenrollCourse, enrollCourse} from "./Enrollment/reducer";
+import {unenrollCourse, enrollCourse, setEnrollments} from "./Enrollment/reducer";
+
+import * as enrollmentsClient from "../Dashboard/Enrollment/client";
 // import { addCourse, deleteCourse, updateCourse }
 //   from "./Courses/reducer";
 export default function Dashboard(
@@ -27,42 +28,49 @@ export default function Dashboard(
 
     // A page toggler for rendering all courses for the student to choose
     const toggleShowAllCourses = () => {
-        if(showAllCourses || currentUser.role === "FACULTY") {
-            setCourses(
-                db.courses.filter( (course) => 
-                    enrollments.some(
-                    (enrollment: any) => 
-                        enrollment.user === currentUser._id && 
-                        enrollment.course === course._id
-                )).map((course:any) => ({...course, courseEnrolled: true}))
-            )
+        if(showAllCourses) {
             setShowAllCourses(false)
         } else {
-            setCourses(
-                db.courses.map((course) => {
-                    if(enrollments.some(
-                    (enrollment: any) => 
-                        enrollment.user === currentUser._id && 
-                        enrollment.course === course._id)){
-                        return {...course, courseEnrolled: true}
-                    } else {
-                        return {...course, courseEnrolled: false}
-                    }
-                }
-                )
-            )
             setShowAllCourses(true)
         }
     }
 
+    // Fetch all enrollment
+    const fetchEnrollments = async () => {
+        const enrollments = await enrollmentsClient.fetchAllEnrollments();
+        dispatch(setEnrollments(enrollments));
+    };
+    useEffect(() => {
+        fetchEnrollments();
+    }, []);
 
 
-    // console.log(showAllCourses)
+    // Enroll user
+    const handleEnrollUser = async (enrollInfo: any) => {
+        await enrollmentsClient.enrollUser(enrollInfo.user, enrollInfo.course)
+        dispatch(enrollCourse(enrollInfo));
+    };
+
+
+    // Unenroll user
+    const handleUnenrollUser = async (enrollInfo: any) => {
+        await enrollmentsClient.unenrollUser(enrollInfo.user, enrollInfo.course)
+        dispatch(unenrollCourse(enrollInfo.enrollCourseId));
+    };
+
+
+    // Filter out enrolled courses to show
+    const enrolledCourses = courses.filter((course) =>
+        enrollments.some((enrollment: any) =>
+            enrollment.user === currentUser._id && enrollment.course === course._id
+        )
+    )
+
+    // console.log(courses)
+    // console.log(fetchEnrollments)
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-
-
             {/* Only STUDENT role can have an Enrollments button */}
             
             {currentUser && currentUser.role !== "FACULTY" && (
@@ -75,47 +83,35 @@ export default function Dashboard(
                     }}> 
                     Enrollments  
                     </button>
-                
 
-                    <h2 id="wd-dashboard-all-courses">All Courses ({showAllCourses && (courses.length)})
+                    <h2 id="wd-dashboard-all-courses">All Courses ({courses.length})
                     </h2> <hr />
                     <div id="wd-dashboard-courses" className="row">
                         <div className="row row-cols-1 row-cols-md-5 g-4">
                             {showAllCourses && courses.map((course) => {
-                                if(enrollments.some(
-                                    (enrollment: any) => 
-                                    enrollment.user === currentUser._id && 
-                                    enrollment.course === course._id)){
-                                    return {...course, courseEnrolled: true}
-                                } else {
-                                    return {...course, courseEnrolled: false}
-                                }
-                            }).map((course) => (
-                                <div className="wd-dashboard-course col" style={{ width: "300px" }}>
-                                    <div className="card rounded-3 overflow-hidden">
-                                        <Link to={`/Kanbas/Courses/${course._id}/Home`}
-                                                className="wd-dashboard-course-link text-decoration-none text-dark" >
+                                const isUserEnrolledInCourse = enrollments.some((enrollment: any) => enrollment.user === currentUser._id && enrollment.course === course._id );
+                                return(
+                                    <div className="wd-dashboard-course col" style={{ width: "300px" }}>
+                                        <div className="card rounded-3 overflow-hidden">
                                             <img src={`${course.image}`} width="100%" height={160} />
                                             <div className="card-body">
                                                 <h5 className="wd-dashboard-course-title card-title">
                                                     {course.name} </h5>
                                                 <p className="wd-dashboard-course-title card-text overflow-y-hidden" style={{ maxHeight: 100 }}>
                                                     {course.description} </p>
-                                                <button className="btn btn-primary"> Go </button>
-
 
                                                 {/* Only STUDENT role can enroll or unenroll courses */}
 
                                                 {/* If the course is enrolled, show the student option to unenroll */}
-                                                { currentUser && currentUser.role !== "FACULTY" && course.courseEnrolled === true &&(
+                                                { currentUser && currentUser.role !== "FACULTY" && isUserEnrolledInCourse === true && (
                                                     <span>
                                                         <button onClick={(event) => {
                                                             event.preventDefault();
-                                                            dispatch(unenrollCourse({
-                                                                course: course._id,
-                                                                user: currentUser._id
-                                                            }));
-                                                            }} className="btn btn-danger float-end"
+                                                            const enrollmentCourseId = enrollments.find((enrollment: any) => enrollment.user === currentUser._id && enrollment.course === course._id)._id;
+                                                            if (enrollmentCourseId) {
+                                                                handleUnenrollUser({enrollCourseId: enrollmentCourseId, user: currentUser._id, course: course._id});
+                                                            }
+                                                            }} className="btn btn-danger float-end mb-1"
                                                             id="wd-delete-course-click">
                                                             Unenroll
                                                         </button>
@@ -123,29 +119,22 @@ export default function Dashboard(
                                                 )}
 
                                                 {/* If the course is unenrolled, show the student option to enroll */}
-                                                { currentUser && currentUser.role !== "FACULTY" && course.courseEnrolled === false &&(
+                                                { currentUser && currentUser.role !== "FACULTY" && isUserEnrolledInCourse === false &&(
                                                     <span>
                                                         <button onClick={(event) => {
                                                             event.preventDefault();
-                                                            dispatch(enrollCourse({
-                                                                course: course._id,
-                                                                user: currentUser._id
-                                                            }));
-                                                            }} className="btn btn-success float-end"
+                                                            handleEnrollUser({user: currentUser._id, course: course._id})
+                                                            }} className="btn btn-success float-end mb-1"
                                                             id="wd-delete-course-click">
                                                             Enroll
                                                         </button>
                                                     </span>
                                                 )}
-
                                             </div>
-                                        </Link>
+                                        </div>
                                     </div>
-                                </div>
-                            ))
-
-                            
-                            }
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
@@ -175,31 +164,16 @@ export default function Dashboard(
                 </div>
             )}
             
-
-            {currentUser && currentUser.role === "FACULTY" && (
-                <div>
-                    <h2 id="wd-dashboard-published">Published Courses ({courses.length})
-                    </h2> <hr />
-                </div>
-            )}
-
-            {currentUser && currentUser.role !== "FACULTY" && (
-                <div>
-                    <h2 id="wd-dashboard-published">Published Courses ({courses.filter((course) => enrollments.some((enrollment:any) => enrollment.user === currentUser._id && enrollment.course === course._id )).length})
-                    </h2> <hr />
-                </div>
-            )}
-
+            <div>
+                <h2 id="wd-dashboard-published">Published Courses ({enrolledCourses.length})
+                </h2> <hr />
+            </div>
+            
             <div id="wd-dashboard-courses" className="row">
                 <div className="row row-cols-1 row-cols-md-5 g-4">
                     {/* If you click on the Enrollment button, the "Published Courses" automatically "collapse" so you can see all course but the
                     total enrolled course still shows */}
-                    {!showAllCourses && courses.filter((course) =>
-                        enrollments.some(
-                        (enrollment:any) =>
-                        enrollment.user === currentUser._id &&
-                        enrollment.course === course._id
-                    )).map((course) => (
+                    {!showAllCourses && enrolledCourses.map((course) => (
                         <div className="wd-dashboard-course col" style={{ width: "300px" }}>
                             <div className="card rounded-3 overflow-hidden">
                                 <Link to={`/Kanbas/Courses/${course._id}/Home`}

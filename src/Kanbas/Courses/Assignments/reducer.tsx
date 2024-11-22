@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { assignments } from "../../Database";
+// import { assignments } from "../../Database";
 const initialState = {
-    assignments: assignments,
+    assignments: [],
 };
 const assignmentsSlice = createSlice({
     name: "assignments", // name the slice
@@ -9,6 +9,10 @@ const assignmentsSlice = createSlice({
     
     // declare reducer functions
     reducers: {
+        setAssignments: (state, action) => {
+            state.assignments = action.payload;
+        },
+
         addAssignment: (state, { payload: assignment }) => { // new assignment is in action.payload
         const newAssignment: any = { // update modules in state adding new module
             _id: new Date().getTime().toString(), // at beginning of array. Override _id with timestamp
@@ -40,7 +44,7 @@ const assignmentsSlice = createSlice({
     },
 });
 // export all reducer functions
-export const { addAssignment, deleteAssignment, updateAssignment } = assignmentsSlice.actions;
+export const { addAssignment, deleteAssignment, updateAssignment, setAssignments } = assignmentsSlice.actions;
 // export reducer
 export default assignmentsSlice.reducer;
 

@@ -19,8 +19,7 @@ const coursesSlice = createSlice({
         },
 
         deleteCourse: (state, action) => { 
-            state.courses = state.courses.filter(
-            (c: any) => c._id !== action.payload._id) as any;
+            state.courses = state.courses.filter((c: any) => c._id !== action.payload._id) as any;
         },
 
 

@@ -3,7 +3,8 @@ import * as db from "../../Database";
 import { addAssignment, updateAssignment } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
@@ -14,6 +15,24 @@ export default function AssignmentEditor() {
 
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     // console.log(JSON.stringify(assignments))
+
+    // create assignment
+    const createAssignmentForCourse = async (assignment: any) => {
+        if (!cid) return;
+        const newAssignment = await coursesClient.createAssignmentForCourse(cid, assignment);
+        dispatch(addAssignment(newAssignment));
+    };
+
+    
+    // update module
+    const saveAssignment = async (assignment: any) => {
+        await assignmentsClient.updateAssignment(assignment);
+        dispatch(updateAssignment(assignment));
+    };
+
+
+
+
 
     // default template of the assignment
     let assignment = {
@@ -226,7 +245,7 @@ export default function AssignmentEditor() {
                                 onClick={() => 
                                     {
                                         if(pickAssignment){
-                                            dispatch(updateAssignment({
+                                            saveAssignment({
                                                 _id: pickAssignment._id,
                                                 title: title,
                                                 course: cid,
@@ -235,9 +254,9 @@ export default function AssignmentEditor() {
                                                 points: points,
                                                 until_date: untilDay,
                                                 description: description
-                                            }))
+                                            })
                                         }else{
-                                            dispatch(addAssignment(
+                                            createAssignmentForCourse(
                                                 {
                                                     title: title,
                                                     course: cid,
@@ -247,7 +266,7 @@ export default function AssignmentEditor() {
                                                     until_date: untilDay,
                                                     description: description
                                                 }
-                                            ))
+                                            )
                                         }
                                     }
                                 }>
