@@ -7,8 +7,20 @@ export default function TOC() {
     <>
       <ul className="nav nav-pills">
         <li className="nav-item">
-          <a href="https://github.com/LordChunky/kanbas-react-web-app-cs5610-fall2024" id="wd-github" className="nav-link" target="_blank">
-            GitHub
+          <a href="https://github.com/LordChunky/kanbas-react-web-app-cs5610-fall2024" id="wd-web-app-github" className="nav-link" target="_blank">
+            Kanbas Web App GitHub
+          </a>
+        </li>
+
+        <li className="nav-item">
+          <a href="https://github.com/LordChunky/kanbas-node-server-app" id="wd-node-server-github" className="nav-link" target="_blank">
+            Kanbas Node Server GitHub
+          </a>
+        </li>
+
+        <li className="nav-item">
+          <a href="https://kanbas-node-server-app-eknd.onrender.com/" id="wd-node-server-github" className="nav-link" target="_blank">
+            Kanbas Server Root on Render
           </a>
         </li>
 
