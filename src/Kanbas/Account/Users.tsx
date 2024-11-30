@@ -2,10 +2,26 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import PeopleTable from "../Courses/People/Table";
 import * as client from "./client";
+import { FaPlus } from "react-icons/fa6";
 export default function Users() {
     const [users, setUsers] = useState<any[]>([]);
     const [role, setRole] = useState("");
     const [name, setName] = useState("");
+
+    // Create users
+    const createUser = async () => {
+        const user = await client.createUser({
+            firstName: "New",
+            lastName: `User${users.length + 1}`,
+            username: `newuser${Date.now()}`,
+            password: "password123",
+            email: `email${users.length + 1}@neu.edu`,
+            section: "S101",
+            role: "STUDENT",
+        });
+        setUsers([...users, user]);
+    };
+    
 
 
     // Search for user by name
@@ -42,7 +58,7 @@ export default function Users() {
     }, [uid]);
     return (
         <div>
-            <h3>Users</h3><h3>Users</h3>
+            <h3>Users</h3>
             {/* Search bar */}
             <input onChange={(e) => filterUsersByName(e.target.value)} placeholder="Search people"
              className="form-control float-start w-25 me-2 wd-filter-by-name" />
@@ -56,6 +72,11 @@ export default function Users() {
                 <option value="FACULTY">Faculty</option>
                 <option value="ADMIN">Administrators</option>
             </select>
+
+            <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
+                <FaPlus className="me-2" />
+                Users
+            </button>
 
             {/* The table itself */}
             <PeopleTable users={users} />
