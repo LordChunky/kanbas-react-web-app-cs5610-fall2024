@@ -2,7 +2,7 @@ import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import * as db from "../../Database";
 import { addAssignment, updateAssignment } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as coursesClient from "../client";
 import * as assignmentsClient from "./client";
 
@@ -13,30 +13,43 @@ export default function AssignmentEditor() {
     const courses = db.courses.find((course) => course._id === cid);
     const dispatch = useDispatch();
 
+    const pickAssignment = assignments.find((assignment:any)=>(assignment._id === aid));
+
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     // console.log(JSON.stringify(assignments))
 
     // create assignment
     const createAssignmentForCourse = async (assignment: any) => {
         if (!cid) return;
+        console.log(assignment)
         const newAssignment = await coursesClient.createAssignmentForCourse(cid, assignment);
+        console.log(newAssignment)
         dispatch(addAssignment(newAssignment));
     };
 
     
-    // update module
+    // update assignment
     const saveAssignment = async (assignment: any) => {
         await assignmentsClient.updateAssignment(assignment);
         dispatch(updateAssignment(assignment));
     };
 
 
-
+    // All of these variable are State variable, which is essentially a record of object that got saved and might be able to use it later
+    // "availableDay" and "availableDayVal" are 2 different variables: "availableDay" is a "Month Day" format and "availableDayVal" 
+    // is in datetime-local format. When return, convert the datetime-local format into "Month Day" format. Have a handleChange event
+    // that converts the datetime-local string into a string of format to your liking
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [availableDay, setAvailableDay] = useState("");
+    const [dueDay, setDueDay] = useState("");
+    const [untilDay, setUntilDay] = useState("");
+    const [points, setPoints] = useState("");
+    // const [points, setPoints] = useState("");
 
 
     // default template of the assignment
-    let assignment = {
-        _id: aid, 
+    let assignment = { 
         title: "New Assignment", 
         course: cid,
         available_from: new Date().toISOString().slice(0, 10),
@@ -46,24 +59,30 @@ export default function AssignmentEditor() {
         description : "New Description",
     }
     
+    useEffect(() => {
+        // if there exist an assignment, go with it
+        if (pickAssignment) {
+            setTitle(pickAssignment.title)
+            setDescription(pickAssignment.description)
+            setAvailableDay(pickAssignment.available_from)
+            setDueDay(pickAssignment.due_date)
+            setUntilDay(pickAssignment.until_date)
+            setPoints(pickAssignment.points)
+        } else {
+            setTitle(assignment.title)
+            setDescription(assignment.description)
+            setAvailableDay(assignment.available_from)
+            setDueDay(assignment.due_date)
+            setUntilDay(assignment.until_date)
+            setPoints(assignment.points)
+        }
+    }, [pickAssignment]);
+
     // Which ever you select will be the "template"
-    const pickAssignment = assignments.filter((assignment:any)=>(assignment._id === aid))[0];
-    if(pickAssignment) {
-        assignment = pickAssignment
-    }
-
-
-    // All of these variable are State variable, which is essentially a record of object that got saved and might be able to use it later
-    // "availableDay" and "availableDayVal" are 2 different variables: "availableDay" is a "Month Day" format and "availableDayVal" 
-    // is in datetime-local format. When return, convert the datetime-local format into "Month Day" format. Have a handleChange event
-    // that converts the datetime-local string into a string of format to your liking
-    const [title, setTitle] = useState(assignment.title);
-    const [description, setDescription] = useState(assignment.description);
-    const [availableDay, setAvailableDay] = useState(assignment.available_from);
-    const [dueDay, setDueDay] = useState(assignment.due_date);
-    const [untilDay, setUntilDay] = useState(assignment.until_date);
-    const [points, setPoints] = useState(assignment.points);
-    
+    // console.log(cid)
+    // console.log(aid)
+    console.log(assignment)
+    // console.log(pickAssignment)
     return (
         <div id="wd-assignments-editor">
             {/*Assignment Name */}
@@ -240,7 +259,7 @@ export default function AssignmentEditor() {
 
                         {/* if it's the faculty, you can edit the assignment and create*/}
                         {currentUser && currentUser.role === "FACULTY" && (
-                            <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${courses && courses._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end"
+                            <Link id="wd-assignment-editor-save" to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-lg btn-danger me-1 float-end"
                                 // Update everything that the user changed
                                 onClick={() => 
                                     {
@@ -256,17 +275,17 @@ export default function AssignmentEditor() {
                                                 description: description
                                             })
                                         }else{
-                                            createAssignmentForCourse(
-                                                {
-                                                    title: title,
-                                                    course: cid,
-                                                    available_from: availableDay, 
-                                                    due_date: dueDay,
-                                                    points: points,
-                                                    until_date: untilDay,
-                                                    description: description
-                                                }
-                                            )
+                                            const newAssignment: any = {
+                                                _id: aid,
+                                                title: title,
+                                                course: cid,
+                                                available_from: availableDay, 
+                                                due_date: dueDay,
+                                                points: points,
+                                                until_date: untilDay,
+                                                description: description
+                                            }
+                                            createAssignmentForCourse(newAssignment)
                                         }
                                     }
                                 }>
@@ -275,13 +294,13 @@ export default function AssignmentEditor() {
                         )}
 
                         {currentUser && currentUser.role !== "FACULTY" && (
-                            <Link  id="wd-assignment-editor-save" to={`/Kanbas/Courses/${courses && courses._id}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
+                            <Link  id="wd-assignment-editor-save" to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-lg btn-danger me-1 float-end">
                             Save
                             </Link>
                         )}
                         
 
-                        <Link  id="wd-assignment-editor-cancel" to={`/Kanbas/Courses/${courses && courses._id}/Assignments`} className="btn btn-lg btn-secondary me-1 float-end">
+                        <Link  id="wd-assignment-editor-cancel" to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-lg btn-secondary me-1 float-end">
                             Cancel
                         </Link>
                     </div>

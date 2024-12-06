@@ -15,7 +15,7 @@ const assignmentsSlice = createSlice({
 
         addAssignment: (state, { payload: assignment }) => { // new assignment is in action.payload
         const newAssignment: any = { // update modules in state adding new module
-            _id: new Date().getTime().toString(), // at beginning of array. Override _id with timestamp
+            _id: assignment._id, // at beginning of array. Override _id with timestamp
             title: assignment.title, 
             description: assignment.description,
             course: assignment.course, 

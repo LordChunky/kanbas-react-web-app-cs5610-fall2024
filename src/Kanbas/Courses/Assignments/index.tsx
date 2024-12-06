@@ -21,7 +21,6 @@ import * as coursesClient from "../client";
 import * as assignmentsClient from "./client";
 
 
-
 // Helper functions for month and time formatting
 function convertMonth(monthString: string){
   var months = [ "January", "February", "March", "April", "May", "June",
@@ -38,9 +37,8 @@ function convertTime(timeString: string){
 
 
 export default function Assignments() {
-  const { cid, aid } = useParams();
+  const { cid } = useParams();
   const { assignments } = useSelector((state: any) => state.assignmentReducer);
-  const { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -55,15 +53,6 @@ export default function Assignments() {
     </Routes>
   }
 
-  // Fetch all assignments
-  const fetchAssignments = async () => {
-    const assignments = await coursesClient.findAllAssignmentsForCourse(cid as string);
-    dispatch(setAssignments(assignments));
-  };
-  useEffect(() => {
-    fetchAssignments();
-  }, []);
-
   // remove assignment
   const removeAssignment = async (assignmentId: string) => {
     await assignmentsClient.deleteAssignment(assignmentId);
@@ -71,7 +60,16 @@ export default function Assignments() {
   };
 
 
-  
+  const fetchAllAssignmentsForCourse = async () => {
+    const allAssignments = await coursesClient.findAllAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(allAssignments));
+  };
+  useEffect(() => {
+    fetchAllAssignmentsForCourse();
+  }, [cid, dispatch]);
+
+
+  console.log(assignments)
   return (
     <div id="wd-assignments">
       { currentUser.role != "FACULTY" && (
