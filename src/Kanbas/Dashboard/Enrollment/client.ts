@@ -1,7 +1,7 @@
 import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });
 const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
-const ENROLLMENTS_API = `${REMOTE_SERVER}/api/enrollments`;
+const ENROLLMENTS_API = `${REMOTE_SERVER}api/enrollments`;
 
 // get all enrollment info
 export const fetchAllEnrollments = async () => {
